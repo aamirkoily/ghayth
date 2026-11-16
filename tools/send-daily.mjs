@@ -106,7 +106,8 @@ async function main() {
     const lon = Number(farm.lon ?? SITES.al_ain.lon);
     const lang = farm.lang || 'en';
     const channel = farm.channel || 'sms';
-    const inp = { palms: Number(farm.palms || 200) };
+    // flow = litres per hour reaching one palm (drippers × L/h each), so the SMS says how long to open the valve.
+    const inp = { palms: Number(farm.palms || 200), flow: Number(farm.flow ?? (farm.emitters ?? 8) * (farm.emitterFlow ?? 8)), lat, lon };
     const params = {
       ecw: Number(farm.ecw ?? 4), efficiency: Number(farm.efficiency ?? 0.9),
       habitSummer: Number(farm.habitSummer ?? 400), habitWinter: Number(farm.habitWinter ?? 250),

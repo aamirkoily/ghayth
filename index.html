@@ -65,7 +65,7 @@
     <section class="setup card" id="setup" aria-labelledby="setupTitle">
       <div class="section-head">
         <h2 id="setupTitle">Your farm</h2>
-        <p>Five things a farmer already knows. Every number on this page updates live.</p>
+        <p>Things a farmer already knows. Every number on this page updates live.</p>
       </div>
       <div class="setup-grid">
         <label class="field">
@@ -97,6 +97,15 @@
           </select>
         </label>
         <label class="field">
+          <span>Water reaching one palm <b id="flowVal">64</b> L per hour <small>so the plan says how long to open the valve</small></span>
+          <div class="pair">
+            <input id="emitters" type="number" min="1" max="50" value="8" aria-label="Drippers or bubblers per palm">
+            <small>drippers</small>
+            <input id="emitterFlow" type="number" min="0.5" max="2000" step="0.5" value="8" aria-label="Litres per hour from each dripper">
+            <small>L/h each</small>
+          </div>
+        </label>
+        <label class="field">
           <span>Your routine now (litres per palm per day)</span>
           <div class="pair">
             <input id="habitSummer" type="number" min="0" max="3000" value="400" aria-label="Summer litres per palm per day">
@@ -123,8 +132,14 @@
           </div>
           <div class="chat">
             <div class="bubble" id="msgBubble" dir="auto"></div>
-            <div class="bubble bubble-me">1</div>
+            <div class="bubble bubble-me" id="msgReply">1</div>
             <div class="bubble bubble-sys" id="msgAck">✅ Logged. Tomorrow’s plan arrives at 5:30 am.</div>
+          </div>
+          <div class="reply-row" role="group" aria-label="Reply as the farmer">
+            <span>Reply as the farmer:</span>
+            <button class="chip active" type="button" data-reply="done">1 · Done</button>
+            <button class="chip" type="button" data-reply="missed">0 · Didn’t water</button>
+            <span class="reply-only"><input id="givenL" type="number" min="0" max="5000" step="10" placeholder="L" aria-label="Litres actually given today"><button class="chip" type="button" data-reply="partial">Gave only ▸</button></span>
           </div>
           <div class="lang-switch" role="group" aria-label="Message language">
             <button class="chip active" data-lang="en">English</button>
@@ -240,6 +255,12 @@
           <figcaption>Water used so far (m³, whole farm)</figcaption>
           <div class="chart-box"><canvas id="waterChart" aria-label="Cumulative water chart"></canvas></div>
         </figure>
+      </div>
+      <div class="card check-card">
+        <h3>🔬 Model check: does it match UAE field measurements?</h3>
+        <p>The model was not tuned to these numbers. They come from sap-flow measurements on UAE date palms (ICBA with Plant &amp; Food Research, NZ).</p>
+        <div class="table-wrap"><table class="kpi-table check-table" id="checkTable"></table></div>
+        <p class="check-foot">Sources: Al-Muaini et al. 2019, <i>Water use and irrigation requirements for date palms on commercial farms in the hyper-arid UAE</i>, Agricultural Water Management 223, <a href="https://doi.org/10.1016/j.agwat.2019.105702" target="_blank" rel="noopener">doi:10.1016/j.agwat.2019.105702</a>. Al-Muaini et al. 2019, <i>Water requirements for irrigation with saline groundwater of three date-palm cultivars…</i>, Agricultural Water Management 222: 213–220, <a href="https://doi.org/10.1016/j.agwat.2019.05.022" target="_blank" rel="noopener">doi:10.1016/j.agwat.2019.05.022</a>.</p>
       </div>
     </section>
 

@@ -149,8 +149,10 @@ input[type="range"] { width: 100%; accent-color: var(--palm-2); }
 .bar .flush { background: repeating-linear-gradient(45deg, #fff 0 4px, #9cc3e6 4px 8px); border-bottom: 1px solid var(--water); }
 .habit-line { position: absolute; left: 6%; right: 6%; border-top: 2px dashed var(--salt); transition: bottom .5s; }
 .day-l { font: 700 1rem var(--display); color: var(--water); font-variant-numeric: tabular-nums; }
+.day-l small { display: block; font: 600 .68rem var(--sans); color: var(--ink-2); margin-top: 1px; }
 .day-tag { font-size: .7rem; font-weight: 700; color: #fff; background: var(--water); border-radius: 99px; padding: 2px 6px; justify-self: center; }
 .day-tag.empty { visibility: hidden; }
+.day-tag.missed { background: var(--salt); }
 .day.is-today .day-name { color: var(--palm-2); }
 .week-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .mini { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
@@ -408,3 +410,20 @@ body.sheet-open .fab { display: none; }
 .tour-focus { outline: 3px solid var(--gold); outline-offset: 6px; border-radius: var(--radius); transition: outline-color .3s; }
 body.touring .fab { display: none; }
 @media (max-width: 640px) { .tour-bar { grid-template-columns: 1fr auto; } .tour-step { display: none; } .tour-text { font-size: .9rem; } }
+
+/* FARMER REPLY (two-way SMS, simulated in the app) */
+.reply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px 0; font-size: .78rem; color: var(--ink-2); }
+.reply-row > span:first-child { width: 100%; font-weight: 600; }
+.reply-only { display: inline-flex; gap: 4px; align-items: center; }
+.reply-only input { width: 64px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 99px; font: inherit; background: #fff; }
+.why li.replan { color: var(--ink); background: #fdf3dc; border-radius: 8px; padding: 6px 8px; list-style: none; margin-inline-start: -18px; }
+
+/* MODEL CHECK */
+.check-card { margin-top: 18px; padding: 20px 22px; display: grid; gap: 10px; }
+.check-card h3 { font-size: 1.15rem; }
+.check-card > p { color: var(--ink-2); font-size: .92rem; }
+.check-table { min-width: 640px; }
+.check-table td { vertical-align: top; text-align: left; white-space: normal; font-size: .88rem; }
+.check-table td.good b { color: var(--leaf); }
+.check-foot { font-size: .78rem !important; }
+.check-foot a { color: var(--palm-2); }

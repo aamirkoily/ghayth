@@ -262,12 +262,17 @@
       // What salt would do with no flush (for the decision trace shown to the farmer).
       const probe = cloneState(st);
       const noFlush = step(probe, p, day.et0, d.litres - d.flush, day.rain).ece;
-      const r = step(st, p, day.et0, d.litres, day.rain);
+      // Real life: the farm reports what it actually gave (pump broke, worker off). The soil
+      // takes the real amount and every later day is re-planned from there.
+      const given = p.given && p.given[i] != null ? Math.max(0, Number(p.given[i])) : null;
+      const r = step(st, p, day.et0, given != null ? given : d.litres, day.rain);
       const habit = decide('habit', st, p, day).litres;
-      out.push({
+      const row = {
         time: day.time, et0: day.et0, tmax: day.tmax, litres: d.litres, flush: d.flush, habit,
-        etc: etcLitres(day.et0, p), eceBefore, eceNoFlush: noFlush, ece: r.ece,
-      });
+        etc: etcLitres(day.et0, p), eceBefore, eceNoFlush: noFlush, ece: r.ece, ks: r.ks,
+      };
+      if (given != null) { row.planned = d.litres; row.litres = given; row.flush = 0; row.given = true; }
+      out.push(row);
     }
     return out;
   }

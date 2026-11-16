@@ -44,6 +44,9 @@
       efficiency: Number($('system').value),
       habitSummer: Math.max(0, Number($('habitSummer').value) || 0),
       habitWinter: Math.max(0, Number($('habitWinter').value) || 0),
+      // Litres per hour reaching one palm, so litres become "open the valve for X minutes".
+      flow: Math.max(0.5, (Number($('emitters').value) || 1) * (Number($('emitterFlow').value) || 1)),
+      lat: coords().lat, lon: coords().lon,
     };
   }
   function params(inp) {
@@ -165,7 +168,11 @@
       });
       state.sims[s] = r;
     }
-    state.plan = E.plan(state.forecast, Object.assign({}, p, { ece0: inp.eceNow }));
+    // basePlan = the 5:30 message. If the farmer replied that today went differently, re-plan from what really happened.
+    state.basePlan = E.plan(state.forecast, Object.assign({}, p, { ece0: inp.eceNow }));
+    state.plan = state.given != null
+      ? E.plan(state.forecast, Object.assign({}, p, { ece0: inp.eceNow, given: { 0: state.given } }))
+      : state.basePlan;
   }
 
   function renderAll() {
@@ -175,6 +182,7 @@
     renderMessage();
     renderXrayFrame();
     renderTable();
+    renderCheck();
     renderCharts();
     document.dispatchEvent(new CustomEvent('nw:update'));
   }
@@ -194,6 +202,11 @@
     return new Date(iso + 'T12:00:00').toLocaleDateString(locale, opts);
   }
 
+  function valveTime(d) {
+    const r = d.litres > 0 && window.Messages.schedule(d.litres, state.inp, d.time);
+    return r ? r.h + 'h' + String(r.m).padStart(2, '0') : '';
+  }
+
   function renderWeek() {
     const plan = state.plan;
     const max = Math.max(...plan.map((d) => Math.max(d.litres, d.habit))) * 1.1;
@@ -211,8 +224,8 @@
         '<div style="height:' + (base / d.litres) * 100 + '%"></div>' +
         (d.flush ? '<div class="flush" style="height:' + (d.flush / d.litres) * 100 + '%"></div>' : '') +
         '</div><div class="habit-line" style="bottom:' + (d.habit / max) * 100 + '%"></div></div>' +
-        '<span class="day-l">' + fmt(d.litres) + '</span>' +
-        '<span class="day-tag' + (d.flush ? '' : ' empty') + '">🧂 flush</span>';
+        '<span class="day-l">' + fmt(d.litres) + (state.inp.flow ? '<small>' + valveTime(d) + '</small>' : '') + '</span>' +
+        (d.given ? '<span class="day-tag missed">' + (d.litres === 0 ? '🚱 missed' : '⚠ only') + '</span>' : '<span class="day-tag' + (d.flush ? '' : ' empty') + '">🧂 flush</span>');
       li.title = dayName(d.time, 'en-GB', { weekday: 'long', day: 'numeric', month: 'short' }) + ': ' + fmt(d.litres) + ' L per palm' +
         (d.flush ? ' (incl. ' + fmt(d.flush) + ' L salt flush)' : '') + ', ET₀ ' + d.et0.toFixed(1) + ' mm';
       ol.appendChild(li);
@@ -231,7 +244,7 @@
       '<div class="mini ' + (endEce < 4 ? 'good' : 'bad') + '"><b>' + inp.eceNow.toFixed(1) + ' → ' + endEce.toFixed(1) + '</b><span>soil salt, dS/m (palm limit 4.0)</span></div>';
 
     const flushDay = plan.find((d) => d.flush > 0);
-    const base = plan.map((d) => d.litres - d.flush);
+    const base = plan.filter((d) => !d.given).map((d) => d.litres - d.flush);
     const s = state.sims;
     const items = [];
     items.push('Follows the heat: <b>' + fmt(Math.min(...base)) + '–' + fmt(Math.max(...base)) + ' L</b> a day this week, not a flat ' +
@@ -244,7 +257,15 @@
     }
     items.push('Over 2025 here: <b>' + pct(1 - s.ghayth.totalWater / s.fao.totalWater) + ' less water</b> than the FAO salt rule, and <b>' +
       pct(s.ghayth.avgYield - s.wateronly.avgYield) + ' more harvest</b> than an app that only cuts water.');
-    $('whyList').innerHTML = items.map((x) => '<li>' + x + '</li>').join('');
+    if (state.given != null) {
+      const b = state.basePlan;
+      const f0 = b.find((d) => d.flush > 0), f1 = plan.find((d) => d.flush > 0);
+      items.unshift('<b>Re-planned from what really happened:</b> ' + fmt(state.given) + ' L given today instead of ' + fmt(plan[0].planned) +
+        '. Tomorrow tops the soil back up with <b>' + fmt(plan[1].litres) + ' L</b> (was ' + fmt(b[1].litres) + ')' +
+        (f1 && (!f0 || f1.time !== f0.time) ? ', and the salt flush moves to <b>' + dayName(f1.time, 'en-GB', { weekday: 'long' }) + '</b>' : '') +
+        (plan[0].ks < 0.999 ? '. The palm felt water stress today' : '') + '.');
+    }
+    $('whyList').innerHTML = items.map((x) => '<li' + (state.given != null && x === items[0] ? ' class="replan"' : '') + '>' + x + '</li>').join('');
 
     // Day picker for the decision trace (keeps the selected day if still valid).
     const sel = $('traceDay');
@@ -275,14 +296,17 @@
     if (needFlush) steps.push(['Smallest extra water that washes salt back to ' + p.flushTarget + ' dS/m <span>(solved by bisection on the soil model)</span>', '+' + fmt(d.flush) + ' L']);
     let html = steps.map((s) => '<li><div>' + s[0] + '</div><b>' + s[1] + '</b></li>').join('');
     html += '<li class="final"><div>Give each palm <span>(' + fmt((d.litres * inp.palms) / 1000, 1) + ' m³ for ' + fmt(inp.palms) + ' palms; your routine: ' + fmt(d.habit) + ' L)</span></div><b>' + fmt(d.litres) + ' L</b></li>';
+    if (d.given) html += '<li class="final"><div>Farmer replied: actually given today <span>(the plan was ' + fmt(d.planned) + ' L; the rest of the week is re-planned from this)</span></div><b>' + fmt(d.litres) + ' L</b></li>';
+    const run = d.litres > 0 && !d.given && window.Messages.schedule(d.litres, inp, d.time);
+    if (run) html += '<li class="final run"><div>Open the valve <span>(' + fmt(d.litres) + ' L ÷ ' + fmt(inp.flow, 1) + ' L/h per palm · start ' + run.start + ', done by ' + run.end + ', 30 min after sunrise at ' + run.sunrise + ', in the cool hours)</span></div><b>' + run.h + ' h ' + String(run.m).padStart(2, '0') + '</b></li>';
     $('traceSteps').innerHTML = html;
   }
 
   /* ---------- message ---------- */
   // Message text lives in js/messages.js, shared with the daily SMS sender (tools/send-daily.mjs).
   const T = window.Messages.T;
-  const buildMessage = (lang) => window.Messages.full(state.plan, state.inp, lang);
-  const buildSms = () => window.Messages.sms(state.plan, state.inp);
+  const buildMessage = (lang) => window.Messages.full(state.basePlan || state.plan, state.inp, lang);
+  const buildSms = () => window.Messages.sms(state.basePlan || state.plan, state.inp);
 
   /* SMS size: plain text fits 160 chars per SMS (153 when split); Arabic/Urdu/emoji need Unicode, 70 (67 when split). */
   function smsInfo(text) {
@@ -293,6 +317,16 @@
     return len + ' chars · ' + parts + ' SMS' + (unicode ? ' (Unicode)' : '');
   }
 
+  /* The farmer's reply re-plans the week: what changed, in the farmer's language. */
+  function replanText(lang) {
+    const t = T[lang] || T.en;
+    const before = state.basePlan, after = state.plan;
+    const f0 = before.find((d) => d.flush > 0), f1 = after.find((d) => d.flush > 0);
+    const name = (d) => window.Messages.dayName(d.time, t.locale, { weekday: 'long' });
+    const flush = f1 && (!f0 || f1.time !== f0.time) ? name(f1) : '';
+    return t.replan(fmt(state.given), fmt(after[1].litres), fmt(before[1].litres), flush);
+  }
+
   function renderMessage() {
     const msg = buildMessage(state.lang);
     const bubble = $('msgBubble');
@@ -300,7 +334,8 @@
     bubble.setAttribute('dir', state.lang === 'en' ? 'ltr' : 'rtl');
     bubble.setAttribute('lang', state.lang);
     const ack = $('msgAck');
-    ack.textContent = T[state.lang].ack;
+    ack.textContent = state.given != null ? replanText(state.lang) : T[state.lang].ack;
+    $('msgReply').textContent = state.given == null ? '1' : state.given === 0 ? '0' : state.given + ' L';
     ack.setAttribute('dir', state.lang === 'en' ? 'ltr' : 'rtl');
     ack.setAttribute('lang', state.lang);
     $('waLink').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
@@ -491,6 +526,23 @@
   }
 
   /* ---------- proof table + charts ---------- */
+  /* Model check: the simulated palm against published UAE field measurements (Al-Muaini et al. 2019a,b). */
+  function renderCheck() {
+    const s = state.sims;
+    const etc = s.ghayth.totalEtc / 1000; // m³ per palm per year
+    const g = s.ghayth.totalWater / 1000, f = s.fao.totalWater / 1000;
+    const rows = [
+      ['Palm water use (ETc) per palm per year', 'Median <b>70 m³</b> on 10 Abu Dhabi commercial farms; 10% of trees use <b>over 100 m³</b>. 43–57 m³ at a research station.',
+        '<b>' + fmt(etc) + ' m³</b><small>a large, mature palm (canopy factor ' + E.DEFAULTS.kr + ' on ' + E.DEFAULTS.spacing + ' m spacing), in the upper part of the measured range</small>', 'good'],
+      ['Recommended irrigation', '<b>1.5 × ETc</b>: a 25% safety factor plus a 25% salt-leaching fraction, every day.',
+        'Our "FAO rule" baseline: <b>' + (f / etc).toFixed(2) + ' × ETc</b>, the same as the published advice.<br>Ghayth: <b>' + (g / etc).toFixed(2) + ' × ETc</b>, ' + pct(1 - g / f) + ' less, still 0 days over the salt limit.', 'good'],
+      ['Dates per palm', '43–89 kg per tree in UAE trials at 5 dS/m (Khalas ≈ 43, Lulu 89).', 'Business case default: <b>60 kg</b>, inside that range (editable).', 'good'],
+      ['Why it matters', 'UAE groundwater is pumped at <b>25× its recharge rate</b> and is getting saltier as it runs down.', 'Every m³ saved stays in the aquifer. As it runs down the water gets saltier: exactly the problem Ghayth plans for.', ''],
+    ];
+    $('checkTable').innerHTML = '<thead><tr><th>Check</th><th>Published UAE field data</th><th>Ghayth model (this page)</th></tr></thead><tbody>' +
+      rows.map((r) => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td class="' + r[3] + '">' + r[2] + '</td></tr>').join('') + '</tbody>';
+  }
+
   function renderTable() {
     const s = state.sims;
     const palms = state.inp.palms;
@@ -586,18 +638,35 @@
     loadForecast().then(renderAll);
 
     const rerender = debounce(renderAll, 120);
-    ['palms', 'ecw', 'eceNow', 'system', 'habitSummer', 'habitWinter'].forEach((id) => $(id).addEventListener('input', () => {
+    ['palms', 'ecw', 'eceNow', 'system', 'habitSummer', 'habitWinter', 'emitters', 'emitterFlow'].forEach((id) => $(id).addEventListener('input', () => {
       $('ecwVal').textContent = Number($('ecw').value).toFixed(1);
       $('ecwHint').textContent = ecwHint(Number($('ecw').value));
       $('eceNowVal').textContent = Number($('eceNow').value).toFixed(1);
+      $('flowVal').textContent = fmt(inputs().flow, 1);
       rerender();
     }));
+    // Typical emitters for each irrigation type (editable).
+    $('system').addEventListener('change', () => {
+      const v = { '0.9': [8, 8], '0.8': [2, 60], '0.6': [1, 600] }[$('system').value];
+      if (v) { $('emitters').value = v[0]; $('emitterFlow').value = v[1]; $('flowVal').textContent = fmt(v[0] * v[1]); rerender(); }
+    });
     $('location').addEventListener('change', onLocation);
     document.querySelectorAll('.lang-switch .chip[data-lang]').forEach((b) => b.addEventListener('click', () => {
       document.querySelectorAll('.lang-switch .chip[data-lang]').forEach((x) => x.classList.toggle('active', x === b));
       state.lang = b.dataset.lang;
       renderMessage();
       document.dispatchEvent(new CustomEvent('nw:lang'));
+    }));
+    // Farmer replies (as they would by SMS): 1 = done, 0 = didn't water, or the litres actually given.
+    document.querySelectorAll('[data-reply]').forEach((b) => b.addEventListener('click', () => {
+      const kind = b.dataset.reply;
+      if (kind === 'partial') {
+        const v = Number($('givenL').value);
+        if (!(v >= 0) || $('givenL').value === '') { $('givenL').focus(); return; }
+        state.given = Math.round(v);
+      } else state.given = kind === 'missed' ? 0 : null;
+      document.querySelectorAll('[data-reply]').forEach((x) => x.classList.toggle('active', x === b));
+      renderAll();
     }));
     $('speakBtn').addEventListener('click', speak);
     $('smsBtn').addEventListener('click', async () => {

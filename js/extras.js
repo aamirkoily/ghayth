@@ -54,6 +54,7 @@
     return {
       plan, inp, today, tom: plan[1] || plan[0], flushDay, week, hot, day,
       avg: Math.round(week / plan.length),
+      run: window.Messages.schedule(today.litres, inp, today.time),
       m3: (l) => fmt((l * inp.palms) / 1000, 1),
       now: inp.eceNow.toFixed(1),
       afterFlush: flushDay ? flushDay.ece.toFixed(1) : plan[plan.length - 1].ece.toFixed(1),
@@ -65,7 +66,8 @@
   const ANSWER = {
     en: {
       today: (f) => 'Today, give each palm ' + fmt(f.today.litres) + ' litres. That is ' + f.m3(f.today.litres) + ' m³ for your ' + fmt(f.inp.palms) + ' palms.' +
-        (f.today.flush ? ' This includes a salt flush of ' + fmt(f.today.flush) + ' litres.' : ''),
+        (f.today.flush ? ' This includes a salt flush of ' + fmt(f.today.flush) + ' litres.' : '') +
+        (f.run ? ' Open the valve for ' + f.run.h + ' hours ' + f.run.m + ' minutes, starting at ' + f.run.start + '.' : ''),
       tomorrow: (f) => 'Tomorrow, ' + f.day(f.tom) + ', give each palm ' + fmt(f.tom.litres) + ' litres.' + (f.tom.flush ? ' That includes a salt flush.' : ''),
       flush: (f) => f.flushDay
         ? 'Wash the salt out on ' + f.day(f.flushDay) + ': give each palm ' + fmt(f.flushDay.litres) + ' litres that day. Your soil salt comes back down to about ' + f.afterFlush + '.'
@@ -84,7 +86,8 @@
     },
     ar: {
       today: (f) => 'اليوم اسقِ كل نخلة ' + fmt(f.today.litres) + ' لتر. هذا ' + f.m3(f.today.litres) + ' م³ لمزرعتك التي فيها ' + fmt(f.inp.palms) + ' نخلة.' +
-        (f.today.flush ? ' وهذا يشمل غسيل الأملاح ' + fmt(f.today.flush) + ' لتر.' : ''),
+        (f.today.flush ? ' وهذا يشمل غسيل الأملاح ' + fmt(f.today.flush) + ' لتر.' : '') +
+        (f.run ? ' افتح المحبس ' + f.run.h + ' ساعة و' + f.run.m + ' دقيقة، ابدأ الساعة ' + f.run.start + '.' : ''),
       tomorrow: (f) => 'غداً، يوم ' + f.day(f.tom) + '، اسقِ كل نخلة ' + fmt(f.tom.litres) + ' لتر.' + (f.tom.flush ? ' وهذا يشمل غسيل الأملاح.' : ''),
       flush: (f) => f.flushDay
         ? 'اغسل الأملاح يوم ' + f.day(f.flushDay) + ': اسقِ كل نخلة ' + fmt(f.flushDay.litres) + ' لتر في ذلك اليوم. ستنخفض ملوحة التربة إلى حوالي ' + f.afterFlush + '.'
@@ -103,7 +106,8 @@
     },
     ur: {
       today: (f) => 'آج ہر درخت کو ' + fmt(f.today.litres) + ' لیٹر پانی دیں۔ آپ کے ' + fmt(f.inp.palms) + ' درختوں کے لیے یہ ' + f.m3(f.today.litres) + ' مکعب میٹر ہے۔' +
-        (f.today.flush ? ' اس میں نمک کی دھلائی کے ' + fmt(f.today.flush) + ' لیٹر شامل ہیں۔' : ''),
+        (f.today.flush ? ' اس میں نمک کی دھلائی کے ' + fmt(f.today.flush) + ' لیٹر شامل ہیں۔' : '') +
+        (f.run ? ' والو ' + f.run.h + ' گھنٹے ' + f.run.m + ' منٹ کھولیں، ' + f.run.start + ' بجے شروع کریں۔' : ''),
       tomorrow: (f) => 'کل، ' + f.day(f.tom) + ' کو، ہر درخت کو ' + fmt(f.tom.litres) + ' لیٹر پانی دیں۔' + (f.tom.flush ? ' اس میں نمک کی دھلائی شامل ہے۔' : ''),
       flush: (f) => f.flushDay
         ? f.day(f.flushDay) + ' کو نمک کی دھلائی کریں: اس دن ہر درخت کو ' + fmt(f.flushDay.litres) + ' لیٹر دیں۔ اس سے مٹی کا نمک تقریباً ' + f.afterFlush + ' تک کم ہو جائے گا۔'

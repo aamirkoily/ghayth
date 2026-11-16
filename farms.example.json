@@ -7,11 +7,13 @@
     "lat": 24.21,
     "lon": 55.74,
     "palms": 200,
-    "ecw": 4.0,
+    "ecw": 4,
     "eceNow": 3.6,
     "efficiency": 0.9,
     "habitSummer": 400,
-    "habitWinter": 250
+    "habitWinter": 250,
+    "emitters": 8,
+    "emitterFlow": 8
   },
   {
     "name": "Demo farm worker, Liwa (Urdu, WhatsApp)",
@@ -21,10 +23,12 @@
     "lat": 23.12,
     "lon": 53.77,
     "palms": 500,
-    "ecw": 6.0,
+    "ecw": 6,
     "eceNow": 3.2,
     "efficiency": 0.8,
     "habitSummer": 450,
-    "habitWinter": 300
+    "habitWinter": 300,
+    "emitters": 2,
+    "emitterFlow": 60
   }
 ]
