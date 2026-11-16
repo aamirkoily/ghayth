@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Demo date farm, Al Ain",
+    "to": "+971500000000",
+    "channel": "sms",
+    "lang": "en",
+    "lat": 24.21,
+    "lon": 55.74,
+    "palms": 200,
+    "ecw": 4.0,
+    "eceNow": 3.6,
+    "efficiency": 0.9,
+    "habitSummer": 400,
+    "habitWinter": 250
+  },
+  {
+    "name": "Demo farm worker, Liwa (Urdu, WhatsApp)",
+    "to": "+971500000001",
+    "channel": "whatsapp",
+    "lang": "ur",
+    "lat": 23.12,
+    "lon": 53.77,
+    "palms": 500,
+    "ecw": 6.0,
+    "eceNow": 3.2,
+    "efficiency": 0.8,
+    "habitSummer": 450,
+    "habitWinter": 300
+  }
+]

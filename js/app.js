@@ -278,79 +278,18 @@
   }
 
   /* ---------- message ---------- */
-  const T = {
-    en: {
-      locale: 'en-GB',
-      head: (d) => '🌴 NakhlaWise · ' + d,
-      today: (l) => 'Today: give each palm ' + l + ' L',
-      farm: (m, n) => 'Whole farm: ' + m + ' m³ (' + n + ' palms)',
-      flush: (d, l) => '🧂 Salt flush on ' + d + ': ' + l + ' L per palm',
-      safe: '✅ Soil salt is safe this week',
-      week: (l) => 'This week: ' + l + ' L per palm',
-      saved: (m) => '💧 Saves ' + m + ' m³ vs your usual routine',
-      reply: 'Reply 1 = done, 2 = pump problem',
-      ack: '✅ Logged. Tomorrow’s plan arrives at 5:30 am.',
-      voice: 'en',
-    },
-    ar: {
-      locale: 'ar-AE-u-nu-latn',
-      head: (d) => '🌴 نخلة وايز · ' + d,
-      today: (l) => 'اليوم: اسقِ كل نخلة ' + l + ' لتر',
-      farm: (m, n) => 'المزرعة كلها: ' + m + ' م³ (' + n + ' نخلة)',
-      flush: (d, l) => '🧂 غسيل الأملاح يوم ' + d + ': ' + l + ' لتر لكل نخلة',
-      safe: '✅ ملوحة التربة آمنة هذا الأسبوع',
-      week: (l) => 'هذا الأسبوع: ' + l + ' لتر لكل نخلة',
-      saved: (m) => '💧 توفير ' + m + ' م³ مقارنة بطريقتك المعتادة',
-      reply: 'رد بـ 1 = تم، 2 = مشكلة في المضخة',
-      ack: '✅ تم التسجيل. خطة الغد تصلك الساعة 5:30 صباحاً.',
-      voice: 'ar',
-    },
-    ur: {
-      locale: 'ur-PK',
-      head: (d) => '🌴 نخلہ وائز · ' + d,
-      today: (l) => 'آج: ہر کھجور کے درخت کو ' + l + ' لیٹر پانی دیں',
-      farm: (m, n) => 'پورا فارم: ' + m + ' مکعب میٹر (' + n + ' درخت)',
-      flush: (d, l) => '🧂 نمک کی دھلائی ' + d + ' کو: ہر درخت کو ' + l + ' لیٹر',
-      safe: '✅ اس ہفتے مٹی میں نمک محفوظ حد میں ہے',
-      week: (l) => 'اس ہفتے: ہر درخت کو ' + l + ' لیٹر',
-      saved: (m) => '💧 آپ کے معمول سے ' + m + ' مکعب میٹر پانی کی بچت',
-      reply: 'جواب دیں: 1 = ہو گیا، 2 = پمپ خراب ہے',
-      ack: '✅ درج ہو گیا۔ کل کا پلان صبح 5:30 بجے آئے گا۔',
-      voice: 'ur',
-    },
-  };
+  // Message text lives in js/messages.js, shared with the daily SMS sender (tools/send-daily.mjs).
+  const T = window.Messages.T;
+  const buildMessage = (lang) => window.Messages.full(state.plan, state.inp, lang);
+  const buildSms = () => window.Messages.sms(state.plan, state.inp);
 
-  function buildMessage(lang) {
-    const t = T[lang];
-    const plan = state.plan;
-    const inp = state.inp;
-    const today = plan[0];
-    const flushDay = plan.find((d) => d.flush > 0);
-    const week = plan.reduce((a, d) => a + d.litres, 0);
-    const habitWeek = plan.reduce((a, d) => a + d.habit, 0);
-    const savedM3 = ((habitWeek - week) * inp.palms) / 1000;
-    const lines = [
-      t.head(dayName(today.time, t.locale, { weekday: 'short', day: 'numeric', month: 'short' })),
-      t.today(fmt(today.litres)),
-      t.farm(fmt((today.litres * inp.palms) / 1000, 1), fmt(inp.palms)),
-      flushDay ? t.flush(dayName(flushDay.time, t.locale, { weekday: 'long' }), fmt(flushDay.litres)) : t.safe,
-      t.week(fmt(week)),
-    ];
-    if (savedM3 > 0.05) lines.push(t.saved(fmt(savedM3, 1)));
-    lines.push(t.reply);
-    return lines.join('\n');
-  }
-
-  function buildSms() {
-    const plan = state.plan;
-    const inp = state.inp;
-    const today = plan[0];
-    const flushDay = plan.find((d) => d.flush > 0);
-    const week = plan.reduce((a, d) => a + d.litres, 0);
-    const d = dayName(today.time, 'en-GB', { day: 'numeric', month: 'short' }).replace(' ', '');
-    return 'NakhlaWise ' + d + ': ' + today.litres + 'L/palm today (' + fmt((today.litres * inp.palms) / 1000, 1) + 'm3 farm). ' +
-      (flushDay ? 'Salt flush ' + dayName(flushDay.time, 'en-GB', { weekday: 'short' }) + ' ' + flushDay.litres + 'L/palm. ' : 'Salt OK. ') +
-      'Week ' + week + 'L/palm. Reply 1=done 2=pump issue';
+  /* SMS size: plain text fits 160 chars per SMS (153 when split); Arabic/Urdu/emoji need Unicode, 70 (67 when split). */
+  function smsInfo(text) {
+    const unicode = /[^\x00-\x7F]/.test(text);
+    const len = Array.from(text).length;
+    const per = unicode ? (len <= 70 ? 70 : 67) : (len <= 160 ? 160 : 153);
+    const parts = Math.ceil(len / per);
+    return len + ' chars · ' + parts + ' SMS' + (unicode ? ' (Unicode)' : '');
   }
 
   function renderMessage() {
@@ -364,8 +303,10 @@
     ack.setAttribute('dir', state.lang === 'en' ? 'ltr' : 'rtl');
     ack.setAttribute('lang', state.lang);
     $('waLink').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
-    const sms = buildSms();
-    $('smsPreview').textContent = sms + '  [' + sms.length + '/160 chars]';
+    // English goes as one cheap plain-text SMS; Arabic and Urdu need Unicode, so send the full localized text.
+    const smsBody = state.lang === 'en' ? buildSms() : msg;
+    $('smsLink').href = 'sms:?&body=' + encodeURIComponent(smsBody);
+    $('smsPreview').textContent = smsBody.replace(/\n/g, ' · ') + '  [' + smsInfo(smsBody) + ']';
   }
 
   function speak() {
@@ -653,7 +594,7 @@
     }));
     $('speakBtn').addEventListener('click', speak);
     $('smsBtn').addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(buildSms()); $('smsBtn').textContent = '✓ Copied'; }
+      try { await navigator.clipboard.writeText(state.lang === 'en' ? buildSms() : buildMessage(state.lang)); $('smsBtn').textContent = '✓ Copied'; }
       catch (e) { $('smsBtn').textContent = 'Copy failed'; }
       setTimeout(() => { $('smsBtn').textContent = 'Copy SMS'; }, 1500);
     });

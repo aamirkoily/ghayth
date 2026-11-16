@@ -36,6 +36,8 @@ Scroll to **Soil X-ray**, press **▶ Play the year**. Talk while it plays:
 
 ## 2:40 – 3:00 · Desert rules and close
 
+- **Live SMS moment (if Twilio is set up):** before the demo, open GitHub → Actions → **Daily farm SMS** → **Run workflow**. Hold up your phone when the SMS lands: "This is the real message. It goes out automatically every morning at 5:30, before irrigation. No app, no data plan."
+  (No Twilio? Tap **📱 Send SMS** on your phone instead. It opens the SMS app with the message ready.)
 - Tap **📵 Test with no signal**: "No signal? The week's plan is already on the phone. One SMS a day, under 160 characters."
 > "No sensors in the ground. Free weather data, a $20 pen, any phone.
 > NakhlaWise: save water without salting your palms."

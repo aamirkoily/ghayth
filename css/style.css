@@ -127,7 +127,9 @@ input[type="range"] { width: 100%; accent-color: var(--palm-2); }
 .bubble-sys { font-size: .8rem; color: var(--ink-2); background: #fff8e6; }
 .lang-switch { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
 .phone-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-.phone-actions .btn-wa { grid-column: 1 / -1; }
+.phone-actions .btn { padding: 11px 8px; font-size: .9rem; white-space: nowrap; }
+.btn-sms { background: var(--water); color: #fff; }
+.btn-sms:hover { background: #185c94; }
 .phone-actions .btn-ghost { background: var(--card); }
 .sms-preview { font: 500 .75rem/1.4 ui-monospace, Consolas, monospace; color: var(--ink-2); margin-top: 10px; padding: 8px 10px; background: rgba(255,255,255,.6); border-radius: 10px; word-break: break-word; }
 

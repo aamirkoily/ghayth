@@ -6,6 +6,9 @@
 
 **Live demo:** https://aamirkoily.github.io/nakhlawise/ · works on any phone, installs, runs offline.
 
+[![Tests](https://github.com/aamirkoily/nakhlawise/actions/workflows/tests.yml/badge.svg)](https://github.com/aamirkoily/nakhlawise/actions/workflows/tests.yml)
+[![Daily farm SMS](https://github.com/aamirkoily/nakhlawise/actions/workflows/daily-sms.yml/badge.svg)](https://github.com/aamirkoily/nakhlawise/actions/workflows/daily-sms.yml)
+
 ---
 
 ## The problem inside the problem
@@ -66,6 +69,30 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 - **Weak connectivity:** one message a day; the full 7-day plan arrives ahead; SMS fits in 160 characters; the web app is an installable PWA that works offline (service worker + bundled 2025 weather + last forecast saved on the phone). Use **"📵 Test with no signal"** in the app to see it.
 - **Affordable:** free weather data, no ground sensors, a $20 EC pen checked monthly, any phone.
 
+## Real SMS: automatic, every morning at 5:30
+
+The advice reaches farmers by real SMS (or WhatsApp) with no app and no internet on their side.
+
+- **In the app:** **📱 Send SMS** opens the phone's own SMS app with today's plan filled in (one plain-text SMS under 160 characters in English; the full Arabic or Urdu text otherwise). It costs nothing extra and needs no account.
+- **Automatic daily sending:** [`tools/send-daily.mjs`](tools/send-daily.mjs) runs every day at **05:30 UAE time** on GitHub Actions ([`daily-sms.yml`](.github/workflows/daily-sms.yml)). For each farm it fetches the live forecast, runs the same engine as the web app, and sends through the [Twilio](https://www.twilio.com) SMS/WhatsApp API. It needs no server and no dependencies, and phone numbers are masked in logs. If there's no signal or the forecast API is down, it falls back to the same calendar week from the bundled 2025 data.
+- The app and the sender share one message builder ([`js/messages.js`](js/messages.js)), so the farmer gets exactly what the demo shows.
+
+### Turn it on (about 10 minutes)
+
+1. Create a free Twilio trial account, verify your own phone number, and get a Twilio phone number.
+2. In the GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**, add:
+   - `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` (Twilio console home page)
+   - `TWILIO_FROM` (your Twilio number, e.g. `+1…`)
+   - `FARMS_JSON`: the farms to message, in the format of [`farms.example.json`](farms.example.json), with your verified number in `"to"`. It's kept as a secret so phone numbers never appear in the public repo.
+   - Optional, for WhatsApp: join the Twilio WhatsApp sandbox and set `"channel": "whatsapp"`.
+3. **Actions → Daily farm SMS → Run workflow** sends one now. After that it runs every morning on its own.
+
+Without the secrets, the workflow runs as a **dry run** and prints the messages instead of failing. Locally:
+
+```bash
+node tools/send-daily.mjs --dry-run
+```
+
 ## Real vs modelled (honest data statement)
 
 - **Real:** daily 2025 weather for Al Ain and Liwa (Open-Meteo Historical API, ERA5 reanalysis), live 7-day forecast (Open-Meteo), "My location" pulls real weather for anywhere.
@@ -78,8 +105,9 @@ No build step. Plain HTML, CSS and JavaScript.
 
 ```bash
 npm start            # serves on http://localhost:5173 (python -m http.server)
-npm test             # 16 tests: mass balance + headline claims
+npm test             # 17 tests: mass balance, headline claims, message format
 npm run compare      # print the season and 3-year comparisons in the terminal
+npm run send:dry     # print today's SMS for each farm in farms.example.json
 ```
 
 ## Project structure
@@ -88,16 +116,19 @@ npm run compare      # print the season and 3-year comparisons in the terminal
 index.html            page
 css/style.css         design (mobile-first, RTL for Arabic/Urdu)
 js/engine.js          soil water + salt model and decision logic (runs in browser and Node)
+js/messages.js        daily message in English/Arabic/Urdu + one-segment SMS (shared by app and sender)
 js/app.js             UI: forecast, message, soil X-ray animation, charts
 data/weather2025.js   bundled real 2025 weather (offline)
 sw.js                 offline cache
-test/                 automated tests
+test/                 automated tests (run on every push by GitHub Actions)
+tools/send-daily.mjs  daily SMS/WhatsApp sender (Twilio), run at 05:30 by GitHub Actions
 tools/                comparison scripts
+.github/workflows/    daily-sms.yml (scheduled sending), tests.yml (CI)
 ```
 
 ## Next steps
 
-1. Twilio WhatsApp/SMS sending on a 5:30 am schedule, with replies ("1 = done") logged to adjust the soil state.
+1. Two-way SMS: a Twilio webhook that logs replies ("1 = done", "2 = pump problem") and corrects the soil state when a day's watering was missed.
 2. Calibrate the soil model per farm from a monthly EC pen reading (the "soil salt today" input already resets the plan).
 3. Add soil types (loamy, gravelly) and other crops (alfalfa, vegetables in greenhouses).
 

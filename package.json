@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node --test test/engine.test.cjs",
     "start": "python -m http.server 5173",
-    "compare": "node tools/sim.cjs && node tools/multi.cjs"
+    "compare": "node tools/sim.cjs && node tools/multi.cjs",
+    "send": "node tools/send-daily.mjs",
+    "send:dry": "node tools/send-daily.mjs --dry-run"
   },
   "license": "MIT"
 }

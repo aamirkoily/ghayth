@@ -73,3 +73,17 @@ test('weekly plan: flushes only when salt is near the limit', () => {
   assert.ok(high.some((d) => d.flush > 0), 'soil near limit: flush planned');
   assert.ok(high.every((d) => d.ece < 4), 'never crosses the limit');
 });
+
+test('daily message: app and SMS sender share one builder, SMS fits one segment', () => {
+  const Messages = require('../js/messages.js');
+  const fc = { time: [], et0: [], rain: [] };
+  for (let i = 0; i < 7; i++) { fc.time.push('2026-07-' + (10 + i)); fc.et0.push(9.5); fc.rain.push(0); }
+  const plan = E.plan(fc, { ece0: 3.65 });
+  const sms = Messages.sms(plan, { palms: 200 });
+  assert.ok(sms.length <= 160, 'one SMS segment: ' + sms.length);
+  assert.ok(/^[\x00-\x7F]*$/.test(sms), 'plain ASCII (GSM-safe)');
+  for (const lang of ['en', 'ar', 'ur']) {
+    const msg = Messages.full(plan, { palms: 200 }, lang);
+    assert.ok(msg.includes(plan[0].litres.toLocaleString('en-US')), lang + ' message has today\'s litres');
+  }
+});

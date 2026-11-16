@@ -1,0 +1,32 @@
+name: Daily farm SMS
+
+on:
+  schedule:
+    - cron: '30 1 * * *' # 05:30 in the UAE (UTC+4), before morning irrigation
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print the messages only, send nothing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Send today's watering advice
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
+          FARMS_JSON: ${{ secrets.FARMS_JSON }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+        run: node tools/send-daily.mjs

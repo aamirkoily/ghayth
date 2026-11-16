@@ -1,0 +1,21 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Model tests (mass balance + headline claims)
+        run: npm test
+      - name: Daily sender dry run
+        run: node tools/send-daily.mjs --dry-run

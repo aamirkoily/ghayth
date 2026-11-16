@@ -128,7 +128,8 @@
             <button class="chip" data-lang="ur">اردو</button>
           </div>
           <div class="phone-actions">
-            <a class="btn btn-wa" id="waLink" target="_blank" rel="noopener">Send on WhatsApp</a>
+            <a class="btn btn-wa" id="waLink" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn-sms" id="smsLink" title="Opens your phone’s SMS app with the message ready">📱 Send SMS</a>
             <button class="btn btn-ghost" id="speakBtn" type="button">🔊 Read aloud</button>
             <button class="btn btn-ghost" id="smsBtn" type="button">Copy SMS</button>
           </div>
@@ -214,7 +215,7 @@
         <article class="card rule">
           <span class="rule-icon">📶</span>
           <h3>Works on one bar of signal</h3>
-          <p>One message a day, under 160 characters as SMS. The full 7-day plan arrives ahead, so a dead signal for a week changes nothing. This page installs and runs offline.</p>
+          <p>A real SMS arrives every morning at 5:30, sent automatically: one plain-text message under 160 characters, no app, no data plan. The full 7-day plan arrives ahead, so a dead signal for a week changes nothing. This page installs and runs offline.</p>
           <button class="btn btn-ghost" id="offlineBtn" type="button">📵 Test with no signal</button>
         </article>
         <article class="card rule">
@@ -257,6 +258,7 @@
   <script src="vendor/chart.umd.min.js"></script>
   <script src="data/weather2025.js"></script>
   <script src="js/engine.js"></script>
+  <script src="js/messages.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

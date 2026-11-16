@@ -1,6 +1,6 @@
 // Offline support: the app shell and 2025 weather are cached, so the page works with no signal.
-const CACHE = 'nakhlawise-v1';
-const SHELL = ['./', 'index.html', 'css/style.css', 'js/engine.js', 'js/app.js', 'data/weather2025.js',
+const CACHE = 'nakhlawise-v2';
+const SHELL = ['./', 'index.html', 'css/style.css', 'js/engine.js', 'js/messages.js', 'js/app.js', 'data/weather2025.js',
   'vendor/chart.umd.min.js', 'assets/icon.svg', 'manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {
