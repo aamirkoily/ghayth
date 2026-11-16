@@ -8,23 +8,19 @@
   const click = (s) => { const el = $(s); if (el) el.click(); };
   const setRange = (s, v) => { const el = $(s); if (el) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); } };
 
+  // About 2 minutes spoken: short lines, one idea per section.
   const STEPS = [
-    // (block: 'center' for small targets)
-    { sel: '.hero', say: () => 'This is Ghayth, Arabic for the rain that ends a drought. Desert date farms water by habit, and their wells are salty. Water-saving apps cut water, so salt is never washed out, and the harvest quietly dies. Ghayth saves water without salting the palms.' },
-    { sel: '#today', say: () => 'Every morning the farm gets one message: litres per palm, how long to open the valve before sunrise, and the one day this week to flush the salt. It works on any phone by SMS, in Arabic, Urdu or English, sent automatically at five thirty.' },
-    { sel: '.reply-row', act: async () => { await sleep(3500); click('[data-reply="missed"]'); await sleep(7000); click('[data-reply="done"]'); },
-      say: () => 'Real farms miss days. If the pump breaks, the worker replies zero. The soil model takes what really happened and re-plans the week: tomorrow refills the dry soil, and the salt flush moves if it needs to.' },
-    { sel: '#traceDay', say: () => 'Every number is explained. Here is today’s maths, from the live forecast to the litres, step by step, so a farm manager can trust it.' },
-    { sel: '#xray', act: () => click('#playBtn'), say: () => 'This is a soil X-ray of a real 2025 year in Al Ain. Watch salt build up in the root zone when the farm only refills water, and watch Ghayth flush it below the roots just before it hurts the palm.' },
-    { sel: '#challenge', say: () => 'Judges can try it themselves: water a farm through a summer heatwave and try to beat Ghayth. Guessing a flat amount either wastes water or salts the roots.' },
-    { sel: '#proof', say: () => 'The proof, on real weather for a full year. The water-only app loses more than ten percent of the harvest. The textbook FAO rule keeps the harvest but over-waters every single day. Ghayth keeps the full harvest with ' + txt('#heroFao', '14%') + ' less water than FAO. And the model matches published sap-flow measurements on UAE date palms.' },
-    { sel: '#business', act: async () => { await sleep(2500); setRange('#waterCost', 3); await sleep(4000); setRange('#waterCost', 1); }, say: () => 'And it is a business. Ghayth chooses the salt target that makes the farm the most money, given its water price and date price. Here that is ' + txt('#bizKpis .biz-kpi b', 'AED 1,892').replace(/^[+−]/, '') + ' more profit a year than the current routine. Raise the water price and it re-plans instantly, and warns when the water costs more than the dates are worth.' },
-    { sel: '#advisers', say: () => 'One adviser or co-op can watch many farms: who needs a flush this week, who is over the salt limit, and how much water every farm will use today. One dirham per palm per year pays for it many times over.' },
-    { sel: '#impact', say: () => 'Now scale it. If one in ten of the UAE’s forty million date palms used Ghayth, about ' + txt('#impactGrid .itile b', '57 million cubic metres').replace(/ m³$/, ' cubic metres') +
-      ' of groundwater would stay in the ground every year, kept conservative with published averages. And in a harsher desert, hotter and saltier, Ghayth still keeps every date.' },
-    { sel: '#stress', say: () => 'This is that stress test: evaporation up ten percent, wells two units saltier. The routine and the water-only app lose dates. Ghayth holds the full harvest.' },
-    { sel: '.rules', say: () => 'Built for desert rules: every litre has a job, it works with one bar of signal or none at all, and it needs no sensors, just a twenty dollar salinity pen and any phone.' },
-    { sel: '.hero', say: () => 'Ghayth. Save water, keep the harvest, and keep the salt out of the roots. Scan the code to try it on your phone.' },
+    { sel: '.hero', say: () => 'This is Ghayth, Arabic for the rain that ends a drought. Desert wells are salty. Apps that only cut water never wash the salt out, and the harvest quietly dies. Ghayth saves water without salting the palms.' },
+    { sel: '#today', say: () => 'Every morning, one SMS in Arabic, Urdu or English: litres per palm, how long to open the valve before sunrise, and the one day this week to flush the salt.' },
+    { sel: '.reply-row', act: async () => { await sleep(2500); click('[data-reply="missed"]'); await sleep(6500); click('[data-reply="done"]'); },
+      say: () => 'Pump broke? The worker replies zero, and the week re-plans from what really happened. Tomorrow refills the dry soil.' },
+    { sel: '#xray', act: () => click('#playBtn'), say: () => 'A real 2025 year in Al Ain. Refilling only lets salt climb into the roots. Ghayth flushes it down just before it hurts the palm. Below, judges can try to beat it themselves.' },
+    { sel: '#proof', say: () => 'On a full year of real weather: ' + txt('#heroFao', '14%') + ' less water than the official FAO salt rule, with the same full harvest. And the model matches published sap-flow measurements from UAE farms.' },
+    { sel: '#business', act: async () => { await sleep(2500); setRange('#waterCost', 3); await sleep(4000); setRange('#waterCost', 1); },
+      say: () => 'It is a business. Ghayth picks the salt target that earns the most: here ' + txt('#bizKpis .biz-kpi b', 'AED 1,892').replace(/^[+−]/, '') + ' more profit a year. Make water expensive and it re-plans instantly. Advisers pay one dirham per palm.' },
+    { sel: '#impact', say: () => 'At UAE scale, if one palm in ten used Ghayth, about ' + txt('#impactGrid .itile b', '57 million m³').replace(/ m³$/, ' cubic metres') + ' of groundwater would stay in the ground every year, using conservative published averages.' },
+    { sel: '#stress', say: () => 'And in a hotter, saltier desert, the routine loses dates. Ghayth keeps every one.' },
+    { sel: '.hero', say: () => 'No sensors, one SMS, works offline, and the whole app speaks Arabic. Ghayth: save water, keep the harvest. Scan the code to try it.' },
   ];
 
   let running = false;
@@ -73,7 +69,7 @@
       const el = $(s.sel);
       document.querySelectorAll('.tour-focus').forEach((x) => x.classList.remove('tour-focus'));
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: s.sel === '#traceDay' || s.sel === '.reply-row' ? 'center' : 'start' });
+        el.scrollIntoView({ behavior: 'smooth', block: s.sel === '.reply-row' ? 'center' : 'start' });
         el.classList.add('tour-focus');
       }
       const line = s.say();

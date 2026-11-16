@@ -113,7 +113,7 @@
     'less water than the official salt rule, same harvest. One SMS, works offline, no sensors': 'ماء أقل من القاعدة الرسمية للأملاح بنفس المحصول. رسالة واحدة، يعمل دون إنترنت، بلا حساسات',
     'and the model matches published UAE sap-flow measurements': 'والنموذج يطابق قياسات تدفق العصارة المنشورة في الإمارات',
     'of groundwater a year if 10% of the UAE’s 40 million date palms used Ghayth': 'من المياه الجوفية سنوياً لو استخدم غيث 10% من نخيل الإمارات البالغ 40 مليون نخلة',
-    'a narrated tour of everything, hands-free': 'جولة مسموعة لكل شيء، دون لمس', '21 tests': '21 اختباراً', '▶ 2 min': '▶ دقيقتان',
+    'a narrated tour of everything, hands-free': 'جولة مسموعة لكل شيء، دون لمس', '22 tests': '22 اختباراً', '▶ 2 min': '▶ دقيقتان',
     'See today’s plan →': 'خطة اليوم ←', 'Watch the soil X-ray →': 'شاهد أشعة التربة ←', 'See the desert rules →': 'قواعد الصحراء ←', 'See the model check →': 'فحص النموذج ←', 'See the UAE impact →': 'الأثر على مستوى الدولة ←', 'Start the tour →': 'ابدأ الجولة ←',
     'Impact': 'الأثر', '🖨 Print wall plan': '🖨 اطبع خطة الجدار',
     // impact + stress
