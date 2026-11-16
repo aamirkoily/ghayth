@@ -1,6 +1,7 @@
 # Ghayth (غيث): notes for the judges
 
 **A-001 Smart Farming for the Desert** · solo entry
+Demo video (2:40): https://aamirkoily.github.io/ghayth/media/ghayth-demo.mp4
 Live: https://aamirkoily.github.io/ghayth/ · Narrated 2-minute tour: https://aamirkoily.github.io/ghayth/?tour=1 · Code: https://github.com/aamirkoily/ghayth
 
 ## The angle (why salt)

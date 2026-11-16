@@ -8,6 +8,8 @@
 
 **Live demo:** https://aamirkoily.github.io/ghayth/ · works on any phone, installs, runs offline.
 
+**Demo video (2:40):** https://aamirkoily.github.io/ghayth/media/ghayth-demo.mp4 · opens with a minute on why this angle, then the product.
+
 [![Tests](https://github.com/aamirkoily/ghayth/actions/workflows/tests.yml/badge.svg)](https://github.com/aamirkoily/ghayth/actions/workflows/tests.yml)
 [![Daily farm SMS](https://github.com/aamirkoily/ghayth/actions/workflows/daily-sms.yml/badge.svg)](https://github.com/aamirkoily/ghayth/actions/workflows/daily-sms.yml)
 

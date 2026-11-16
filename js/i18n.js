@@ -21,7 +21,7 @@
     'and': 'و',
     'exactly when to flush the salt, then sends it as one message a day, on any phone, in Arabic, Urdu or English.':
       'متى تغسل الملح بالضبط، ثم يرسلها في رسالة واحدة يومياً، على أي هاتف، بالعربية أو الأردية أو الإنجليزية.',
-    'See today’s plan': 'خطة اليوم', 'Watch the soil X-ray ▸': 'شاهد أشعة التربة ◂', '▶ 2-minute guided tour': '▶ جولة إرشادية (بالإنجليزية)',
+    'See today’s plan': 'خطة اليوم', 'Watch the soil X-ray ▸': 'شاهد أشعة التربة ◂', '▶ 2-minute guided tour': '▶ جولة إرشادية (بالإنجليزية)', '🎬 Demo video (2:40)': '🎬 فيديو العرض (2:40، بالإنجليزية)',
     'less water than the textbook FAO salt rule, same harvest': 'ماء أقل من قاعدة الفاو للأملاح، بنفس المحصول',
     'harvest lost by a typical “water-saving” app to salt': 'من المحصول يضيع بسبب الملح مع تطبيق "توفير المياه" المعتاد',
     'days with root salt above the palm’s limit (Ghayth, 2025)': 'أيام تجاوز فيها ملح الجذور حد النخلة (غيث، 2025)',
