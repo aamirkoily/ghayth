@@ -192,7 +192,8 @@
     const probe = cloneState(st);
     step(probe, p, day.et0, base, day.rain);
     const projected = rootZoneEce(probe, p);
-    const urgent = projected > p.eceThreshold - 0.1; // never let it cross the safe limit
+    // Never let salt cross the ceiling (the palm's no-loss limit, unless profit mode raised it).
+    const urgent = projected > (p.saltCeiling != null ? p.saltCeiling : p.eceThreshold) - 0.1;
     if ((projected > p.flushTrigger && p.flushDays.includes(weekday(day.time))) || urgent) {
       flush = flushLitres(st, p, day.et0, base, day.rain);
     }
@@ -271,7 +272,65 @@
     return out;
   }
 
-  const Engine = { DEFAULTS, simulate, plan, step, initialState, rootZoneEce, etcLitres, saltYield, geometry, isSummer, decide };
+  /**
+   * Farm economics for one simulated season.
+   * econ: { waterCost (per m³), kgPerPalm, pricePerKg, palms }
+   */
+  function economics(sim, econ, years) {
+    const y = years || 1;
+    const waterM3 = (sim.totalWater * econ.palms) / 1000 / y; // per year
+    const waterBill = waterM3 * econ.waterCost;
+    const revenue = sim.avgYield * econ.kgPerPalm * econ.pricePerKg * econ.palms;
+    return {
+      waterM3, waterBill, revenue, profit: revenue - waterBill,
+      // Water price at which the dates no longer pay for the water.
+      breakEvenWaterCost: waterM3 > 0 ? revenue / waterM3 : Infinity,
+    };
+  }
+
+  /** The same year of weather repeated, so salt carried over from one year hurts the next. */
+  function repeatYears(weather, years) {
+    const out = { time: [], et0: [], rain: [] };
+    for (let y = 0; y < years; y++) {
+      out.time.push(...weather.time.map((t) => (Number(t.slice(0, 4)) + y) + t.slice(4)));
+      out.et0.push(...weather.et0);
+      out.rain.push(...(weather.rain || weather.et0.map(() => 0)));
+    }
+    return out;
+  }
+
+  /** Salt target settings: flush when salt passes `target`, wash back 0.3 below it, never exceed it. */
+  function targetParams(target) {
+    return { flushTrigger: target, flushTarget: target - 0.3, saltCeiling: target + 0.1 };
+  }
+
+  /**
+   * Profit mode: try salt targets from 3.0 to 6.0 dS/m and keep the one with the highest
+   * yearly profit (date revenue minus water bill), judged over 3 years so salt carried
+   * into the next season is paid for. Cheap water → keep salt low, full harvest.
+   * Expensive water → accept a little salt where the dates lost are worth less than the water saved.
+   */
+  function optimiseProfit(weather, params, econ, years) {
+    const y = years || 3;
+    const w = repeatYears(weather, y);
+    const tried = [];
+    for (let t = 3.0; t <= 6.001; t += 0.25) {
+      const target = Math.round(t * 100) / 100;
+      const sim = simulate('ghayth', w, Object.assign({}, params, targetParams(target)));
+      tried.push({ target, sim, econ: economics(sim, econ, y) });
+    }
+    const best = tried.reduce((a, b) => (b.econ.profit > a.econ.profit ? b : a));
+    return { best, tried, years: y };
+  }
+
+  /** Any strategy over the same multi-year horizon, for a like-for-like comparison. */
+  function simulateYears(strategy, weather, params, econ, years) {
+    const y = years || 3;
+    const sim = simulate(strategy, repeatYears(weather, y), params);
+    return { sim, econ: economics(sim, econ, y) };
+  }
+
+  const Engine = { DEFAULTS, economics, optimiseProfit, simulateYears, repeatYears, targetParams, simulate, plan, step, initialState, rootZoneEce, etcLitres, saltYield, geometry, isSummer, decide };
   if (typeof module !== 'undefined' && module.exports) module.exports = Engine;
   else root.Engine = Engine;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -48,6 +48,30 @@ Al Ain, 200 palms, well water 4 dS/m (brackish), drip irrigation. Full year, dai
 - Over 3 simulated years the naive app's root zone stays saturated with salt every day of years 2 and 3. Ghayth stays below the limit every day. (`npm run compare`)
 - These claims are **automated tests** (`npm test`) at both oases for well water from 1 to 8 dS/m.
 
+## The business case: optimise profit, not litres
+
+Water costs money to pump (or to buy), and salt costs dates. Ghayth turns that trade-off into one number the farmer cares about: **profit per year**. It tries flush thresholds from 3.0 to 6.0 dS/m, simulates **3 years** on real weather (so salt is never pushed into next year), and picks the one that earns the most for that farm's water price and date price.
+
+Al Ain, 200 palms, 4 dS/m well, water AED 1/m³, 60 kg/palm at AED 5/kg (illustrative prices, editable in the app). Yearly average over 3 repeated years of real 2025 weather, so salt carried over counts:
+
+| Method | Water / yr | Harvest | Profit / yr | vs routine |
+|---|---:|---:|---:|---:|
+| Farmer's routine | 22,840 m³ | 95.8% | AED 34,634 | — |
+| Water-saving app | 18,311 m³ | 85.9% | AED 33,245 | −AED 1,388 |
+| FAO salt rule | 28,145 m³ | 100% | AED 31,855 | −AED 2,779 |
+| Ghayth · full harvest | 24,294 m³ | 100% | AED 35,706 | +AED 1,072 |
+| **Ghayth · max profit** (flush near 4.5) | **22,850 m³** | **99.0%** | **AED 36,526** | **+AED 1,892** |
+
+- **Same water as the routine, +AED 1,892 a year:** Ghayth's max-profit plan uses the same water as the farmer's routine but times it, so the harvest goes from 95.8% to 99.0%.
+- **The water-saving app is a false economy:** it saves AED 4,500 of water and loses AED 5,900 of dates.
+- **Break-even water price ≈ AED 2.6/m³.** Above it the dates don't pay for the water, and the app says so. This is useful for a farmer who buys trucked or desalinated water.
+- **Dearer water → higher salt target, less flushing.** The optimiser adapts automatically (tested).
+- **Scale (simple arithmetic):** Ghayth saves about 19 m³ per palm per year against the FAO rule at the same harvest. For every million palms on brackish wells that is about 19 million m³ of groundwater a year.
+
+**Business model:** the daily SMS is free for farmers (adoption first). Advisers and co-ops pay **AED 1 per palm per year** for the multi-farm view. Running cost is about AED 55 per farm per year (365 SMS), and the farm's gain is about 9× the fee. Water and agriculture authorities get region-wide verified water-saving reports.
+
+**Adviser view:** one agronomist sees every farm on one screen. Each farm gets a plan from its own well, soil reading and live forecast, sorted by urgency: who is over the salt limit, who needs a flush this week, and the water each farm needs today. The demo uses 8 **fictional** farms.
+
 **Why it saves water:** salt removed per litre of drainage equals the salt concentration of that drainage. Flushing only when the soil is near (but below) the limit means every flush litre carries out the most salt possible. The FAO rule leaches a constant fraction every day, even when the soil is clean.
 
 ## How it works
@@ -73,6 +97,8 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 
 ## Highlights in the app
 
+- **▶ 2-minute guided tour.** One button scrolls through the whole app with captions and spoken narration, including a live change of the water price. Open [`?tour=1`](https://aamirkoily.github.io/ghayth/?tour=1) to start it automatically.
+- **💰 Profit optimiser and 🧑‍🌾 adviser view.** See the business case above.
 - **🎙 Voice assistant (Arabic, Urdu, English).** Tap *Ask* and say "كم ماء اليوم؟", "آج کتنا پانی دوں؟" or "When is the salt flush?". It understands questions about today, tomorrow, the week, salt, heat and "why", and answers out loud from the live plan. Tap-to-ask chips and a text box work when the mic doesn't.
 - **🎮 Can you beat Ghayth?** The judge becomes the farmer for 12 weeks of the real 2025 summer, choosing litres per palm each week while the soil X-ray shows salt building up. Saving water gets punished by salt, and playing safe wastes water. The only winning move is the salt-flush insight. Strategies we tested: flat 350 L loses 5.4% of the dates; watering exactly the palm's need loses 3.9%; flat 450–600 L wastes 500–3,000 m³; need plus a flush when salt passes 3.5 wins.
 - **🩻 Soil X-ray.** Animated year under three palms (routine, water-saving app, Ghayth) with salt in every 15 cm of the root zone.
@@ -108,7 +134,7 @@ node tools/send-daily.mjs --dry-run
 
 - **Real:** daily 2025 weather for Al Ain and Liwa (Open-Meteo Historical API, ERA5 reanalysis), live 7-day forecast (Open-Meteo), "My location" pulls real weather for anywhere.
 - **Standard science:** FAO-56 and FAO-29 parameters as above.
-- **Modelled:** the soil itself (generic sandy desert soil). Harvest is a relative index, not kg. The farmer's routine defaults (400/250 L) are illustrative and editable.
+- **Modelled:** the soil itself (generic sandy desert soil). Harvest is a relative index, turned into AED with the yield and price you enter. The farmer’s routine defaults (400/250 L), water price, yield and date price are illustrative and editable. Adviser-view farms are fictional.
 
 ## Run it
 
@@ -116,7 +142,7 @@ No build step. Plain HTML, CSS and JavaScript.
 
 ```bash
 npm start            # serves on http://localhost:5173 (python -m http.server)
-npm test             # 17 tests: mass balance, headline claims, message format
+npm test             # 19 tests: mass balance, headline claims, message format, profit optimiser
 npm run compare      # print the season and 3-year comparisons in the terminal
 npm run send:dry     # print today's SMS for each farm in farms.example.json
 ```
@@ -130,6 +156,8 @@ js/engine.js          soil water + salt model and decision logic (runs in browse
 js/messages.js        daily message in English/Arabic/Urdu + one-segment SMS (shared by app and sender)
 js/app.js             UI: forecast, message, soil X-ray animation, charts
 js/extras.js          voice assistant, "Can you beat Ghayth?" challenge, QR code
+js/business.js        profit optimiser, unit economics, adviser (multi-farm) view
+js/tour.js            narrated 2-minute guided tour (?tour=1)
 data/weather2025.js   bundled real 2025 weather (offline)
 sw.js                 offline cache
 test/                 automated tests (run on every push by GitHub Actions)

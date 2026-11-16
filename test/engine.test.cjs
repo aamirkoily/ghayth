@@ -87,3 +87,24 @@ test('daily message: app and SMS sender share one builder, SMS fits one segment'
     assert.ok(msg.includes(plan[0].litres.toLocaleString('en-US')), lang + ' message has today\'s litres');
   }
 });
+
+test('profit optimiser: beats every fixed strategy and finds the break-even water price', () => {
+  const econ = { waterCost: 1, kgPerPalm: 60, pricePerKg: 5, palms: 200 };
+  const p = { ecw: 4 };
+  const opt = E.optimiseProfit(W.al_ain, p, econ, 3);
+  for (const k of ['habit', 'wateronly', 'fao', 'ghayth']) {
+    const r = E.simulateYears(k, W.al_ain, p, econ, 3);
+    assert.ok(opt.best.econ.profit >= r.econ.profit - 1, 'optimiser beats ' + k);
+  }
+  assert.ok(opt.best.target >= 3 && opt.best.target <= 6, 'target in safe search range');
+  assert.ok(opt.best.sim.avgYield > 0.97, 'max-profit plan keeps at least 97% of the harvest');
+  const e = opt.best.econ;
+  assert.ok(Math.abs(e.revenue - e.waterM3 * e.breakEvenWaterCost) < 1, 'break-even: revenue = water × price');
+});
+
+test('profit optimiser: dearer water pushes the salt target up (less flushing)', () => {
+  const cheap = E.optimiseProfit(W.al_ain, { ecw: 4 }, { waterCost: 0.2, kgPerPalm: 60, pricePerKg: 5, palms: 200 }, 3);
+  const dear = E.optimiseProfit(W.al_ain, { ecw: 4 }, { waterCost: 2.5, kgPerPalm: 60, pricePerKg: 5, palms: 200 }, 3);
+  assert.ok(dear.best.target >= cheap.best.target, cheap.best.target + ' → ' + dear.best.target);
+  assert.ok(dear.best.econ.waterM3 <= cheap.best.econ.waterM3, 'uses less water when water is dear');
+});

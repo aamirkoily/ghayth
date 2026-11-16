@@ -24,6 +24,7 @@
       <a href="#xray">Soil X-ray</a>
       <a href="#challenge">Challenge</a>
       <a href="#proof">Proof</a>
+      <a href="#business">Business</a>
       <a href="#how">How it works</a>
     </nav>
     <span class="net-badge" id="netBadge" title="Data source">…</span>
@@ -39,6 +40,7 @@
         <div class="hero-cta">
           <a class="btn btn-primary" href="#today">See today’s plan</a>
           <a class="btn btn-ghost" href="#xray">Watch the soil X-ray ▸</a>
+          <button class="btn btn-gold" id="tourBtn" type="button">▶ 2-minute guided tour</button>
         </div>
       </div>
       <div class="hero-stats" aria-live="polite">
@@ -242,9 +244,66 @@
     </section>
 
     <!-- DESERT RULES -->
+    <section class="business" id="business" aria-labelledby="bizTitle">
+      <div class="section-head">
+        <p class="kicker">05 · The business case</p>
+        <h2 id="bizTitle">Optimise profit, not just litres</h2>
+        <p>Water costs money to pump. Salt costs dates. Ghayth finds the salt target that earns the most for <b>your</b> water price and date price, judged over 3 years so salt never becomes next year’s problem.</p>
+      </div>
+      <div class="biz-inputs card">
+        <label class="field">
+          <span>Water cost <b id="wcVal">1.0</b> AED per m³ <small>pumping energy, or bought water</small></span>
+          <input id="waterCost" type="range" min="0.1" max="5" step="0.1" value="1">
+        </label>
+        <label class="field">
+          <span>Dates per palm (kg/year)</span>
+          <input id="kgPalm" type="number" min="5" max="250" value="60" inputmode="numeric">
+        </label>
+        <label class="field">
+          <span>Farm-gate date price (AED/kg)</span>
+          <input id="priceKg" type="number" min="0.5" max="100" step="0.5" value="5" inputmode="decimal">
+        </label>
+      </div>
+      <div class="biz-kpis" id="bizKpis" aria-live="polite"></div>
+      <div class="biz-grid">
+        <figure class="card chart-card">
+          <figcaption>Yearly profit at each salt target <small>(3-year average · gold ◆ = Ghayth’s pick)</small></figcaption>
+          <div class="chart-box"><canvas id="profitChart" aria-label="Profit by salt target"></canvas></div>
+        </figure>
+        <div class="table-wrap"><table class="kpi-table biz-table" id="bizTable"></table></div>
+      </div>
+      <div class="model-grid">
+        <article class="card model">
+          <span class="model-tag">Farmers</span>
+          <h3>Free daily SMS</h3>
+          <p>Every farmer gets the daily plan by SMS, voice and web for free. Adoption first: the farmer pays nothing and only needs a $20 salinity pen.</p>
+        </article>
+        <article class="card model">
+          <span class="model-tag">Advisers &amp; co-ops · paid</span>
+          <h3 id="feeTitle">AED 1 per palm per year</h3>
+          <p id="feeText">An adviser dashboard for every farm they serve, with flush alerts and a water report. It costs about AED 55 per farm a year to run (365 SMS).</p>
+        </article>
+        <article class="card model">
+          <span class="model-tag">Water &amp; farm authorities</span>
+          <h3>Verified water savings</h3>
+          <p>Region-wide reports of water used vs the FAO rule, salt risk by area, and which farms need help. This supports water-saving targets without cutting the harvest.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="advisers" id="advisers" aria-labelledby="advTitle">
+      <div class="section-head">
+        <p class="kicker">06 · Scale: the adviser view</p>
+        <h2 id="advTitle">One agronomist, many farms, one screen</h2>
+        <p>Each farm gets its own plan from its own well, soil reading and live forecast. The adviser sees who needs a salt flush this week and the water every farm needs today. Farms below are <b>fictional demo farms</b>.</p>
+      </div>
+      <div class="adv-summary" id="advSummary"></div>
+      <div class="table-wrap"><table class="kpi-table adv-table" id="advTable"></table></div>
+    </section>
+
     <section class="rules" aria-labelledby="rulesTitle">
       <div class="section-head">
-        <p class="kicker">05 · Built for the desert</p>
+        <p class="kicker">07 · Built for the desert</p>
         <h2 id="rulesTitle">The desert rules</h2>
       </div>
       <div class="rules-grid">
@@ -270,7 +329,7 @@
     <!-- HOW -->
     <section class="how" id="how" aria-labelledby="howTitle">
       <div class="section-head">
-        <p class="kicker">06 · How it works</p>
+        <p class="kicker">08 · How it works</p>
         <h2 id="howTitle">From weather to a decision</h2>
       </div>
       <ol class="pipeline">
@@ -329,5 +388,7 @@
   <script src="vendor/qrcode.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/extras.js"></script>
+  <script src="js/business.js"></script>
+  <script src="js/tour.js"></script>
 </body>
 </html>
