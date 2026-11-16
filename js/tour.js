@@ -107,7 +107,11 @@
 
   const btn = document.getElementById('tourBtn');
   if (btn) btn.addEventListener('click', start);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && running) stop(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && running) stop();
+    // Recording the demo video (?video=1): Enter starts the narrated tour (a key press lets the browser speak).
+    else if (VIDEO && e.key === 'Enter' && !running && !/^(INPUT|SELECT|TEXTAREA|BUTTON|A)$/.test(document.activeElement.tagName)) { e.preventDefault(); start(); }
+  });
   if (/[?&]tour=1/.test(location.search)) setTimeout(start, 1500);
   window.NWTour = { start, stop, STEPS, VIDEO_STEPS };
 })();
