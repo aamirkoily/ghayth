@@ -1,5 +1,5 @@
 /*
- * NakhlaWise messages: the daily advice text in English, Arabic and Urdu, plus a
+ * Ghayth messages: the daily advice text in English, Arabic and Urdu, plus a
  * one-segment ASCII SMS. Shared by the web app (window.Messages) and the daily
  * SMS sender (module.exports), so both always say exactly the same thing.
  */
@@ -12,7 +12,7 @@
   const T = {
     en: {
       locale: 'en-GB',
-      head: (d) => '🌴 NakhlaWise · ' + d,
+      head: (d) => '🌴 Ghayth · ' + d,
       today: (l) => 'Today: give each palm ' + l + ' L',
       farm: (m, n) => 'Whole farm: ' + m + ' m³ (' + n + ' palms)',
       flush: (d, l) => '🧂 Salt flush on ' + d + ': ' + l + ' L per palm',
@@ -25,7 +25,7 @@
     },
     ar: {
       locale: 'ar-AE-u-nu-latn',
-      head: (d) => '🌴 نخلة وايز · ' + d,
+      head: (d) => '🌴 غيث · ' + d,
       today: (l) => 'اليوم: اسقِ كل نخلة ' + l + ' لتر',
       farm: (m, n) => 'المزرعة كلها: ' + m + ' م³ (' + n + ' نخلة)',
       flush: (d, l) => '🧂 غسيل الأملاح يوم ' + d + ': ' + l + ' لتر لكل نخلة',
@@ -38,7 +38,7 @@
     },
     ur: {
       locale: 'ur-PK',
-      head: (d) => '🌴 نخلہ وائز · ' + d,
+      head: (d) => '🌴 غیث · ' + d,
       today: (l) => 'آج: ہر کھجور کے درخت کو ' + l + ' لیٹر پانی دیں',
       farm: (m, n) => 'پورا فارم: ' + m + ' مکعب میٹر (' + n + ' درخت)',
       flush: (d, l) => '🧂 نمک کی دھلائی ' + d + ' کو: ہر درخت کو ' + l + ' لیٹر',
@@ -77,7 +77,7 @@
     const flushDay = plan.find((d) => d.flush > 0);
     const week = plan.reduce((a, d) => a + d.litres, 0);
     const d = dayName(today.time, 'en-GB', { day: 'numeric', month: 'short' }).replace(' ', '');
-    return 'NakhlaWise ' + d + ': ' + today.litres + 'L/palm today (' + fmt((today.litres * inp.palms) / 1000, 1) + 'm3 farm). ' +
+    return 'Ghayth ' + d + ': ' + today.litres + 'L/palm today (' + fmt((today.litres * inp.palms) / 1000, 1) + 'm3 farm). ' +
       (flushDay ? 'Salt flush ' + dayName(flushDay.time, 'en-GB', { weekday: 'short' }) + ' ' + flushDay.litres + 'L/palm. ' : 'Salt OK. ') +
       'Week ' + week + 'L/palm. Reply 1=done 2=pump issue';
   }

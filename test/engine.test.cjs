@@ -49,8 +49,8 @@ test('date palm salt tolerance matches FAO-29 (threshold 4, slope 3.6%)', () => 
 
 for (const site of SITES) {
   for (const ecw of [1, 2, 4, 6, 8]) {
-    test(site + ', well water ' + ecw + ' dS/m: NakhlaWise keeps salt under the limit with less water than FAO', () => {
-      const n = E.simulate('nakhla', W[site], { ecw });
+    test(site + ', well water ' + ecw + ' dS/m: Ghayth keeps salt under the limit with less water than FAO', () => {
+      const n = E.simulate('ghayth', W[site], { ecw });
       const f = E.simulate('fao', W[site], { ecw });
       assert.equal(n.saltDays, 0, 'no day above 4 dS/m');
       assert.ok(n.avgYield > 0.999, 'full harvest');

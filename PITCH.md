@@ -1,12 +1,13 @@
-# NakhlaWise · demo and pitch script
+# Ghayth · demo and pitch script
 
 Total: about 3 minutes. Practise twice with a timer. Before you start, open the live link on your laptop **and** your phone, and close the voice sheet if it's open.
 
-Live: https://aamirkoily.github.io/nakhlawise/
+Live: https://aamirkoily.github.io/ghayth/
 
 ## 0:00 – 0:20 · Hook (hero section, QR visible)
 
-> "Every team in this track will show you an app that saves water. I'm going to show you why, in the desert, that app kills the harvest.
+> "Ghayth, غيث, is Arabic for the rain that ends a drought: the right water at the right moment.
+> Every team in this track will show you an app that saves water. I'm going to show you why, in the desert, that app kills the harvest.
 > Desert wells are salty. Every litre leaves salt behind, and the only thing that removes it is extra water draining past the roots.
 > Scan this QR code. You'll need it in two minutes."
 
@@ -16,7 +17,7 @@ Press **▶ Play the year** and talk over it:
 
 > "Same palm, same well, same real 2025 weather from Al Ain. Only the decision changes.
 > Middle: the typical water-saving app. By summer the roots are red, the palm droops, and it stays there: 321 days above the salt limit, about 13% of the dates gone.
-> Right: NakhlaWise. It refills only what the palm used, but it watches the salt, and when salt nears the limit it adds one flush, that small blue wave, and only then.
+> Right: Ghayth. It refills only what the palm used, but it watches the salt, and when salt nears the limit it adds one flush, that small blue wave, and only then.
 > That's the problem inside the problem: not just how much to water, but when to spend water washing out salt."
 
 ## 1:10 – 1:55 · The core + voice (Today section)
@@ -32,11 +33,11 @@ Press **▶ Play the year** and talk over it:
 
 ## 1:55 – 2:30 · Make the judges play (Challenge)
 
-> "Now it's your turn. You're the farmer, it's summer 2025, 12 weeks. Try to keep every date and use less water than NakhlaWise."
+> "Now it's your turn. You're the farmer, it's summer 2025, 12 weeks. Try to keep every date and use less water than Ghayth."
 
 - Play 2–3 weeks yourself at a flat 350 L to show the salt rising, or hand your phone to a judge.
 - Then jump to the end:
-  > "Save water and salt eats your dates. Play safe and you waste hundreds of cubic metres. The only way to win is to flush salt at the right moment, which is exactly what NakhlaWise does every day."
+  > "Save water and salt eats your dates. Play safe and you waste hundreds of cubic metres. The only way to win is to flush salt at the right moment, which is exactly what Ghayth does every day."
 
 ## 2:30 – 3:00 · Proof, desert rules, close
 
@@ -45,7 +46,7 @@ Press **▶ Play the year** and talk over it:
 - Tap **📵 Test with no signal**: "No signal? The week's plan is already on the phone."
 - Tap **📱 Send SMS** on your phone: "One plain-text SMS, any phone."
 > "No sensors in the ground. Free weather data, a $20 pen, any phone, any language.
-> NakhlaWise: save water without salting your palms."
+> Ghayth: save water without salting your palms."
 
 ---
 
@@ -63,7 +64,7 @@ Press **▶ Play the year** and talk over it:
 
 **Is this real data?** The weather is real: 2025 ERA5 via Open-Meteo, plus the live forecast. The soil is modelled with standard FAO parameters for sandy soil, and harvest is a relative index. It's all in "What is real, what is modelled" at the bottom of the page.
 
-**NakhlaWise sometimes uses more water than the farmer's routine. Isn't that bad?** The routine looks cheap because it under-waters in heatwaves and never washes the salt out: 179 days above the limit and about 4% of the harvest lost. NakhlaWise spends water only when it protects the harvest, and uses 14% less than the expert FAO rule. Change the routine inputs live: a heavy-watering farm (550/350 L) saves about 23%.
+**Ghayth sometimes uses more water than the farmer's routine. Isn't that bad?** The routine looks cheap because it under-waters in heatwaves and never washes the salt out: 179 days above the limit and about 4% of the harvest lost. Ghayth spends water only when it protects the harvest, and uses 14% less than the expert FAO rule. Change the routine inputs live: a heavy-watering farm (550/350 L) saves about 23%.
 
 **Does the voice work offline?** The answers are computed on the phone and read out by the phone's own voice, and tapped or typed questions always work. Turning speech into text uses the phone's built-in recognition, which may need a signal. The daily SMS needs none.
 

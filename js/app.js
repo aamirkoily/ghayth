@@ -1,4 +1,4 @@
-/* NakhlaWise app: wires the engine to the page. Plain JS, no build step. */
+/* Ghayth app: wires the engine to the page. Plain JS, no build step. */
 (function () {
   'use strict';
   const E = window.Engine;
@@ -12,7 +12,7 @@
     habit: { name: 'Your routine', short: 'Your routine', color: '#c9962b' },
     wateronly: { name: 'Typical water-saving app', short: 'Water-saving app', color: '#c2410c' },
     fao: { name: 'Textbook FAO salt rule', short: 'FAO rule', color: '#7b8794' },
-    nakhla: { name: 'NakhlaWise', short: 'NakhlaWise', color: '#1f6b4f' },
+    ghayth: { name: 'Ghayth', short: 'Ghayth', color: '#1f6b4f' },
   };
 
   const state = {
@@ -182,10 +182,10 @@
   /* ---------- hero ---------- */
   function renderHero() {
     const s = state.sims;
-    const lessThanFao = 1 - s.nakhla.totalWater / s.fao.totalWater;
+    const lessThanFao = 1 - s.ghayth.totalWater / s.fao.totalWater;
     $('heroFao').textContent = pct(lessThanFao);
     $('heroNaive').textContent = pct(1 - s.wateronly.avgYield);
-    $('heroSalt').textContent = s.nakhla.saltDays;
+    $('heroSalt').textContent = s.ghayth.saltDays;
     $('heroFoot').textContent = 'Simulated on real 2025 weather · ' + coords().name + ' · well water ' + state.inp.ecw.toFixed(1) + ' dS/m.';
   }
 
@@ -242,8 +242,8 @@
     } else {
       items.push('Salt is safe at <b>' + inp.eceNow.toFixed(1) + ' dS/m</b>, so no water is spent on flushing this week.');
     }
-    items.push('Over 2025 here: <b>' + pct(1 - s.nakhla.totalWater / s.fao.totalWater) + ' less water</b> than the FAO salt rule, and <b>' +
-      pct(s.nakhla.avgYield - s.wateronly.avgYield) + ' more harvest</b> than an app that only cuts water.');
+    items.push('Over 2025 here: <b>' + pct(1 - s.ghayth.totalWater / s.fao.totalWater) + ' less water</b> than the FAO salt rule, and <b>' +
+      pct(s.ghayth.avgYield - s.wateronly.avgYield) + ' more harvest</b> than an app that only cuts water.');
     $('whyList').innerHTML = items.map((x) => '<li>' + x + '</li>').join('');
 
     // Day picker for the decision trace (keeps the selected day if still valid).
@@ -369,11 +369,11 @@
     '<g class="dates"><circle cx="55" cy="62" r="3.2" fill="#a8541f"/><circle cx="60" cy="65" r="3.2" fill="#b9652a"/><circle cx="66" cy="63" r="3.2" fill="#a8541f"/><circle cx="58" cy="70" r="3" fill="#c07431"/><circle cx="64" cy="69" r="3" fill="#a8541f"/></g>' +
     '</svg>';
 
-  const XRAY_COLS = ['habit', 'wateronly', 'nakhla'];
+  const XRAY_COLS = ['habit', 'wateronly', 'ghayth'];
   const XRAY_SUB = {
     habit: () => 'flat ' + fmt(state.inp.habitSummer) + ' L summer / ' + fmt(state.inp.habitWinter) + ' L winter',
     wateronly: () => 'refills only what the palm used',
-    nakhla: () => 'refill + salt flush only when needed',
+    ghayth: () => 'refill + salt flush only when needed',
   };
   const xrayEls = {};
 
@@ -382,7 +382,7 @@
     grid.innerHTML = '';
     for (const s of XRAY_COLS) {
       const col = document.createElement('article');
-      col.className = 'card plot' + (s === 'nakhla' ? ' winner' : '');
+      col.className = 'card plot' + (s === 'ghayth' ? ' winner' : '');
       let layers = '';
       for (let i = 0; i < 8; i++) layers += '<div class="layer"><span class="depth">' + (i * 15) + '–' + ((i + 1) * 15) + ' cm</span><span class="val"></span></div>';
       col.innerHTML =
@@ -417,7 +417,7 @@
     if (!state.sims) return;
     const i = Math.min(state.day, state.season.time.length - 1);
     const palms = state.inp.palms;
-    const any = state.sims.nakhla.days[i];
+    const any = state.sims.ghayth.days[i];
     $('dayRange').value = i;
     $('xrayDate').textContent = new Date(any.time + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     const tmax = state.season.tmax ? state.season.tmax[i] : null;
@@ -444,7 +444,7 @@
       el.health.textContent = pct(c.health);
       el.health.className = 'm-health ' + (c.health > 0.995 ? 'good' : c.health < 0.95 ? 'bad' : '');
       if (d.ece > 4) { el.alarm.textContent = '⚠ avg salt ' + d.ece.toFixed(1); el.alarm.className = 'alarm on'; }
-      else if (s === 'nakhla' && d.flush > 0) { el.alarm.textContent = '🧂 flush ' + fmt(d.flush) + ' L'; el.alarm.className = 'alarm ok'; }
+      else if (s === 'ghayth' && d.flush > 0) { el.alarm.textContent = '🧂 flush ' + fmt(d.flush) + ' L'; el.alarm.className = 'alarm ok'; }
       else { el.alarm.textContent = 'avg salt ' + d.ece.toFixed(1) + ' ✓'; el.alarm.className = 'alarm ok'; }
       if (flushAnim && d.flush > 0) {
         el.wave.classList.remove('go');
@@ -467,7 +467,7 @@
       let flush = false;
       for (let k = 0; k < steps; k++) {
         state.day++;
-        if (state.day < state.season.time.length && state.sims.nakhla.days[state.day].flush > 0) flush = true;
+        if (state.day < state.season.time.length && state.sims.ghayth.days[state.day].flush > 0) flush = true;
       }
       if (state.day >= state.season.time.length - 1) {
         state.day = state.season.time.length - 1;
@@ -494,18 +494,18 @@
   function renderTable() {
     const s = state.sims;
     const palms = state.inp.palms;
-    const order = ['habit', 'wateronly', 'fao', 'nakhla'];
+    const order = ['habit', 'wateronly', 'fao', 'ghayth'];
     const desc = {
       habit: 'what the farmer does today',
       wateronly: 'refill what the palm used, nothing more',
       fao: 'constant leaching fraction every day (FAO-29)',
-      nakhla: 'refill + flush only when salt nears the limit',
+      ghayth: 'refill + flush only when salt nears the limit',
     };
     let html = '<thead><tr><th>Decision method</th><th>Water / year</th><th>vs FAO rule</th><th>Harvest index</th><th>Salt-damage days</th><th>Peak root salt</th></tr></thead><tbody>';
     for (const k of order) {
       const r = s[k];
       const vsFao = r.totalWater / s.fao.totalWater - 1;
-      html += '<tr class="' + (k === 'nakhla' ? 'us' : '') + '">' +
+      html += '<tr class="' + (k === 'ghayth' ? 'us' : '') + '">' +
         '<td><span class="swatch" style="background:' + STRATS[k].color + '"></span>' + STRATS[k].name + '<small>' + desc[k] + '</small></td>' +
         '<td>' + fmt((r.totalWater * palms) / 1000) + ' m³<small>' + fmt(r.totalWater / r.days.length) + ' L/palm/day</small></td>' +
         '<td class="' + (k === 'fao' ? '' : vsFao < 0 && r.avgYield > 0.995 ? 'good' : r.avgYield > 0.995 ? '' : 'bad') + '">' + (k === 'fao' ? '—' : (vsFao > 0 ? '+' : '−') + pct(Math.abs(vsFao))) + '</td>' +
@@ -522,12 +522,12 @@
     if (!window.Chart) return;
     const s = state.sims;
     const palms = state.inp.palms;
-    const labels = s.nakhla.days.map((d) => d.time);
-    const order = ['habit', 'wateronly', 'fao', 'nakhla'];
+    const labels = s.ghayth.days.map((d) => d.time);
+    const order = ['habit', 'wateronly', 'fao', 'ghayth'];
     const ds = (fn) => order.map((k) => ({
       label: STRATS[k].short, data: s[k].days.map((d, i) => fn(k, d, i)),
       borderColor: STRATS[k].color, backgroundColor: STRATS[k].color,
-      borderWidth: k === 'nakhla' ? 3 : 1.8, pointRadius: 0, tension: 0.25,
+      borderWidth: k === 'ghayth' ? 3 : 1.8, pointRadius: 0, tension: 0.25,
       borderDash: k === 'fao' ? [5, 4] : [],
     }));
     const common = (yTitle) => ({
@@ -593,8 +593,8 @@
       rerender();
     }));
     $('location').addEventListener('change', onLocation);
-    document.querySelectorAll('.lang-switch .chip').forEach((b) => b.addEventListener('click', () => {
-      document.querySelectorAll('.lang-switch .chip').forEach((x) => x.classList.toggle('active', x === b));
+    document.querySelectorAll('.lang-switch .chip[data-lang]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('.lang-switch .chip[data-lang]').forEach((x) => x.classList.toggle('active', x === b));
       state.lang = b.dataset.lang;
       renderMessage();
       document.dispatchEvent(new CustomEvent('nw:lang'));

@@ -9,7 +9,7 @@ for (const loc of ['al_ain', 'liwa']) {
   const rep = { time: [], et0: [], rain: [] };
   for (let y = 0; y < years; y++) { rep.time.push(...w.time.map(t => (2025 + y) + t.slice(4))); rep.et0.push(...w.et0); rep.rain.push(...w.rain); }
   console.log('==', loc, years + 'y', JSON.stringify(params));
-  for (const s of ['habit', 'wateronly', 'fao', 'nakhla']) {
+  for (const s of ['habit', 'wateronly', 'fao', 'ghayth']) {
     const r = E.simulate(s, rep, params);
     const perYear = [];
     for (let y = 0; y < years; y++) {

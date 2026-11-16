@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * NakhlaWise daily sender: for each farm, fetch the live 7-day forecast, run the
+ * Ghayth daily sender: for each farm, fetch the live 7-day forecast, run the
  * same engine as the web app, and send today's advice by SMS or WhatsApp (Twilio).
  *
  *   node tools/send-daily.mjs            send (dry run if Twilio keys are missing)
@@ -98,7 +98,7 @@ async function sendTwilio(to, body, channel) {
 
 async function main() {
   const { farms, source } = loadFarms();
-  console.log('NakhlaWise daily send · ' + new Date().toISOString() + ' · ' + farms.length + ' farm(s) from ' + source +
+  console.log('Ghayth daily send · ' + new Date().toISOString() + ' · ' + farms.length + ' farm(s) from ' + source +
     (DRY ? ' · DRY RUN' + (!haveKeys && !argDry ? ' (no Twilio keys set)' : '') : ''));
   let failed = 0;
   for (const farm of farms) {

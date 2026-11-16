@@ -1,5 +1,5 @@
 // Offline support: the app shell and 2025 weather are cached, so the page works with no signal.
-const CACHE = 'nakhlawise-v3';
+const CACHE = 'ghayth-v4';
 const SHELL = ['./', 'index.html', 'css/style.css', 'js/engine.js', 'js/messages.js', 'js/app.js', 'js/extras.js', 'vendor/qrcode.min.js', 'data/weather2025.js',
   'vendor/chart.umd.min.js', 'assets/icon.svg', 'manifest.webmanifest'];
 

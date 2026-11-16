@@ -1,4 +1,4 @@
-/* NakhlaWise extras: voice assistant (ask + spoken answer), "Can you beat NakhlaWise?" challenge, QR code. */
+/* Ghayth extras: voice assistant (ask + spoken answer), "Can you beat Ghayth?" challenge, QR code. */
 (function () {
   'use strict';
   const NW = window.NW;
@@ -223,7 +223,7 @@
   window.NWVoice = { detect, ask, setVLang, openVoice };
 
   /* =====================================================================
-   * 2. CHALLENGE: "Can you beat NakhlaWise?"
+   * 2. CHALLENGE: "Can you beat Ghayth?"
    * ===================================================================== */
   const WEEKS = 12;
   const START = '2025-06-01';
@@ -262,7 +262,7 @@
     G.lastHealth = 1;
     G.flush = false;
     G.log = [];
-    G.ref = E.simulate('nakhla', G.w, G.p);
+    G.ref = E.simulate('ghayth', G.w, G.p);
     G.done = false;
     $('gameResult').hidden = true;
     $('gamePlay').hidden = false;
@@ -344,7 +344,7 @@
     const li = document.createElement('li');
     const ece = E.rootZoneEce(G.st, G.p);
     li.innerHTML = '<span>W' + (G.week + 1) + '</span><span class="gl-you">You ' + fmt(wkWater / 7) + ' L/d' + (G.flush ? ' 🧂' : '') + '</span>' +
-      '<span class="gl-nw">NW ' + fmt(refWater / 7) + ' L/d' + (refFlush ? ' 🧂' : '') + '</span>' +
+      '<span class="gl-nw">Ghayth ' + fmt(refWater / 7) + ' L/d' + (refFlush ? ' 🧂' : '') + '</span>' +
       '<span class="' + (ece > 4 ? 'bad' : 'good') + '">salt ' + ece.toFixed(1) + '</span>';
     $('gLog').prepend(li);
     $('gFeedback').innerHTML = wkSalt
@@ -365,14 +365,14 @@
     const dWater = ((you.water - nw.water) * palms) / 1000;
     const dHarvest = (nw.harvest - you.harvest) * 100;
     let verdict;
-    if (dHarvest <= 0.2 && dWater <= 0) verdict = '🏆 You beat NakhlaWise! You kept the harvest with less water. You think like the algorithm.';
-    else if (dHarvest > 0.2 && dWater < 0) verdict = '🧂 You saved ' + fmt(-dWater) + ' m³ of water, but salt cost you ' + dHarvest.toFixed(1) + '% of your dates. That is the trap NakhlaWise avoids.';
+    if (dHarvest <= 0.2 && dWater <= 0) verdict = '🏆 You beat Ghayth! You kept the harvest with less water. You think like the algorithm.';
+    else if (dHarvest > 0.2 && dWater < 0) verdict = '🧂 You saved ' + fmt(-dWater) + ' m³ of water, but salt cost you ' + dHarvest.toFixed(1) + '% of your dates. That is the trap Ghayth avoids.';
     else if (dHarvest > 0.2) verdict = '💸 You used ' + fmt(dWater) + ' m³ more water <b>and</b> lost ' + dHarvest.toFixed(1) + '% of your dates. Watering more on a fixed routine doesn’t wash the salt out at the right time.';
-    else verdict = '💧 Full harvest, but you used ' + fmt(dWater) + ' m³ more water than NakhlaWise. That’s ' + fmt(dWater / 2500, 1) + ' Olympic pools across ' + fmt(palms) + ' palms in one summer.';
+    else verdict = '💧 Full harvest, but you used ' + fmt(dWater) + ' m³ more water than Ghayth. That’s ' + fmt(dWater / 2500, 1) + ' Olympic pools across ' + fmt(palms) + ' palms in one summer.';
     const row = (label, a, b, good) => '<tr><td>' + label + '</td><td class="' + (good ? 'good' : 'bad') + '">' + a + '</td><td>' + b + '</td></tr>';
     $('gameResult').innerHTML =
       '<h3>Summer over.</h3><p class="verdict">' + verdict + '</p>' +
-      '<table class="game-table"><thead><tr><th></th><th>You</th><th>NakhlaWise</th></tr></thead><tbody>' +
+      '<table class="game-table"><thead><tr><th></th><th>You</th><th>Ghayth</th></tr></thead><tbody>' +
       row('Water (farm)', fmt((you.water * palms) / 1000) + ' m³', fmt((nw.water * palms) / 1000) + ' m³', you.water <= nw.water) +
       row('Harvest', (you.harvest * 100).toFixed(1) + '%', (nw.harvest * 100).toFixed(1) + '%', you.harvest >= nw.harvest - 0.002) +
       row('Salt-damage days', you.salt, nw.salt, you.salt <= nw.salt) +
@@ -398,7 +398,7 @@
     if (!window.qrcode) return;
     const url = location.protocol.startsWith('http') && !/localhost|127\.0\.0\.1/.test(location.hostname)
       ? location.origin + location.pathname
-      : 'https://aamirkoily.github.io/nakhlawise/';
+      : 'https://aamirkoily.github.io/ghayth/';
     const qr = window.qrcode(0, 'M');
     qr.addData(url);
     qr.make();

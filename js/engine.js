@@ -1,5 +1,5 @@
 /*
- * NakhlaWise engine — salt-aware irrigation for date palms.
+ * Ghayth engine — salt-aware irrigation for date palms.
  *
  * Model (per palm, daily time step):
  *  - Crop water need: ETc = ET0 x Kc x Kr x spacing^2            (FAO-56)
@@ -32,7 +32,7 @@
     thetaSat: 0.38,      // sandy soil: saturation
     eceThreshold: 4.0,   // date palm: no yield loss below this ECe (FAO-29)
     eceSlope: 3.6,       // % yield lost per dS/m above threshold (FAO-29)
-    flushTrigger: 3.7,   // NakhlaWise flushes when root-zone ECe passes this
+    flushTrigger: 3.7,   // Ghayth flushes when root-zone ECe passes this
     flushTarget: 3.4,    // ...and flushes just enough to get back to this
     flushDays: [0, 1, 2, 3, 4, 5, 6], // allowed flush weekdays (0 = Sun ... 6 = Sat)
     habitSummer: 400,    // farmer's habit, L/palm/day, May-Sep
@@ -187,7 +187,7 @@
     }
     const base = Math.round(refillLitres(st, p, day.et0));
     if (strategy === 'wateronly') return { litres: base, flush: 0 };
-    // NakhlaWise: water-only base + a salt flush on allowed days when salinity is creeping up.
+    // Ghayth: water-only base + a salt flush on allowed days when salinity is creeping up.
     let flush = 0;
     const probe = cloneState(st);
     step(probe, p, day.et0, base, day.rain);
@@ -257,7 +257,7 @@
     for (let i = 0; i < forecast.time.length; i++) {
       const day = { time: forecast.time[i], et0: forecast.et0[i] || 0, rain: (forecast.rain && forecast.rain[i]) || 0, tmax: forecast.tmax ? forecast.tmax[i] : null };
       const eceBefore = rootZoneEce(st, p);
-      const d = decide('nakhla', st, p, day);
+      const d = decide('ghayth', st, p, day);
       // What salt would do with no flush (for the decision trace shown to the farmer).
       const probe = cloneState(st);
       const noFlush = step(probe, p, day.et0, d.litres - d.flush, day.rain).ece;

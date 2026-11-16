@@ -1,13 +1,15 @@
-# NakhlaWise 🌴 نخلة وايز
+# Ghayth · غيث
 
 **Salt-aware watering for desert date farms.** Save water *without* salting your palms.
 
+*Ghayth* (غيث) is Arabic for the rain that ends a drought: water that arrives at the right time and brings the land back to life. That is the idea: the right water, at the right moment.
+
 > Breaking Bytes 2026 · Problem **A-001 Smart Farming for the Desert**
 
-**Live demo:** https://aamirkoily.github.io/nakhlawise/ · works on any phone, installs, runs offline.
+**Live demo:** https://aamirkoily.github.io/ghayth/ · works on any phone, installs, runs offline.
 
-[![Tests](https://github.com/aamirkoily/nakhlawise/actions/workflows/tests.yml/badge.svg)](https://github.com/aamirkoily/nakhlawise/actions/workflows/tests.yml)
-[![Daily farm SMS](https://github.com/aamirkoily/nakhlawise/actions/workflows/daily-sms.yml/badge.svg)](https://github.com/aamirkoily/nakhlawise/actions/workflows/daily-sms.yml)
+[![Tests](https://github.com/aamirkoily/ghayth/actions/workflows/tests.yml/badge.svg)](https://github.com/aamirkoily/ghayth/actions/workflows/tests.yml)
+[![Daily farm SMS](https://github.com/aamirkoily/ghayth/actions/workflows/daily-sms.yml/badge.svg)](https://github.com/aamirkoily/ghayth/actions/workflows/daily-sms.yml)
 
 ---
 
@@ -21,7 +23,7 @@ stays, builds up season after season, and the palm quietly loses its harvest.
 So the real decision a date farmer faces is not just *how much to water*, but
 **how much to water *and* when to spend water washing the salt out.**
 
-## What NakhlaWise does
+## What Ghayth does
 
 | | |
 |---|---|
@@ -39,11 +41,11 @@ Al Ain, 200 palms, well water 4 dS/m (brackish), drip irrigation. Full year, dai
 | Farmer's routine (400 L summer / 250 L winter) | 22,840 m³ | 95.8% | 179 |
 | Typical "water-saving" app (refill what the palm used) | 18,514 m³ | **87.3%** | **321** |
 | Textbook FAO-29 rule (constant 25% leaching every day) | 28,145 m³ | 100% | 0 |
-| **NakhlaWise** (refill + flush only near the limit) | **24,298 m³** | **100%** | **0** |
+| **Ghayth** (refill + flush only near the limit) | **24,298 m³** | **100%** | **0** |
 
 - **14% less water than the textbook FAO salt rule, with the same full harvest.** About 3,850 m³ saved per 200 palms per year.
 - The naive water-saving app **loses ~13% of the harvest** to salt and keeps the root zone above the palm's limit on 321 days.
-- Over 3 simulated years the naive app's root zone stays saturated with salt every day of years 2 and 3. NakhlaWise stays below the limit every day. (`npm run compare`)
+- Over 3 simulated years the naive app's root zone stays saturated with salt every day of years 2 and 3. Ghayth stays below the limit every day. (`npm run compare`)
 - These claims are **automated tests** (`npm test`) at both oases for well water from 1 to 8 dS/m.
 
 **Why it saves water:** salt removed per litre of drainage equals the salt concentration of that drainage. Flushing only when the soil is near (but below) the limit means every flush litre carries out the most salt possible. The FAO rule leaches a constant fraction every day, even when the soil is clean.
@@ -72,8 +74,8 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 ## Highlights in the app
 
 - **🎙 Voice assistant (Arabic, Urdu, English).** Tap *Ask* and say "كم ماء اليوم؟", "آج کتنا پانی دوں؟" or "When is the salt flush?". It understands questions about today, tomorrow, the week, salt, heat and "why", and answers out loud from the live plan. Tap-to-ask chips and a text box work when the mic doesn't.
-- **🎮 Can you beat NakhlaWise?** The judge becomes the farmer for 12 weeks of the real 2025 summer, choosing litres per palm each week while the soil X-ray shows salt building up. Saving water gets punished by salt, and playing safe wastes water. The only winning move is the salt-flush insight. Strategies we tested: flat 350 L loses 5.4% of the dates; watering exactly the palm's need loses 3.9%; flat 450–600 L wastes 500–3,000 m³; need plus a flush when salt passes 3.5 wins.
-- **🩻 Soil X-ray.** Animated year under three palms (routine, water-saving app, NakhlaWise) with salt in every 15 cm of the root zone.
+- **🎮 Can you beat Ghayth?** The judge becomes the farmer for 12 weeks of the real 2025 summer, choosing litres per palm each week while the soil X-ray shows salt building up. Saving water gets punished by salt, and playing safe wastes water. The only winning move is the salt-flush insight. Strategies we tested: flat 350 L loses 5.4% of the dates; watering exactly the palm's need loses 3.9%; flat 450–600 L wastes 500–3,000 m³; need plus a flush when salt passes 3.5 wins.
+- **🩻 Soil X-ray.** Animated year under three palms (routine, water-saving app, Ghayth) with salt in every 15 cm of the root zone.
 - **🧮 How today's number is decided.** Every step of the decision for any day: ET₀ → palm need → refill → salt check → smallest flush.
 - **📵 Test with no signal** and **📱 Send SMS**: works offline and sends a plain SMS from any phone.
 - **QR code** in the header card: judges scan it and have the app on their own phones.
@@ -127,7 +129,7 @@ css/style.css         design (mobile-first, RTL for Arabic/Urdu)
 js/engine.js          soil water + salt model and decision logic (runs in browser and Node)
 js/messages.js        daily message in English/Arabic/Urdu + one-segment SMS (shared by app and sender)
 js/app.js             UI: forecast, message, soil X-ray animation, charts
-js/extras.js          voice assistant, "Can you beat NakhlaWise?" challenge, QR code
+js/extras.js          voice assistant, "Can you beat Ghayth?" challenge, QR code
 data/weather2025.js   bundled real 2025 weather (offline)
 sw.js                 offline cache
 test/                 automated tests (run on every push by GitHub Actions)

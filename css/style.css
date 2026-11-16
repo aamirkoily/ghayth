@@ -362,3 +362,4 @@ body.sheet-open .fab { display: none; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+.eyebrow-ar { font: 600 1.05rem "Noto Naskh Arabic", serif; color: var(--gold); margin-inline-end: 6px; }
