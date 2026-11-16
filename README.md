@@ -27,7 +27,7 @@ So the real decision a date farmer faces is not just *how much to water*, but
 |---|---|
 | **Who** | Owners and workers on small to mid-size date-palm farms (UAE oases: Al Ain, Liwa). Workers are often Urdu-speaking; owners Arabic-speaking. |
 | **Decision** | Litres per palm, every day, plus the day and size of a **salt flush** only when soil salt nears the palm's limit. |
-| **How** | One message a day (WhatsApp, or an SMS under 160 characters) in **Arabic, Urdu or English**, with **read-aloud** for farmers who don't read. |
+| **How** | One message a day (WhatsApp, or an SMS under 160 characters) in **Arabic, Urdu or English**, plus a **voice assistant**: farmers who don't read just ask out loud and hear the answer. |
 | **Inputs** | Location, number of palms, well-water salinity, a soil reading from a **$20 EC meter**, irrigation type, current routine. No sensors in the ground. |
 
 ## Results on real 2025 weather
@@ -68,6 +68,15 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 - **Water:** follows real daily heat instead of a calendar; extra water only for salt, only when it does the most good.
 - **Weak connectivity:** one message a day; the full 7-day plan arrives ahead; SMS fits in 160 characters; the web app is an installable PWA that works offline (service worker + bundled 2025 weather + last forecast saved on the phone). Use **"📵 Test with no signal"** in the app to see it.
 - **Affordable:** free weather data, no ground sensors, a $20 EC pen checked monthly, any phone.
+
+## Highlights in the app
+
+- **🎙 Voice assistant (Arabic, Urdu, English).** Tap *Ask* and say "كم ماء اليوم؟", "آج کتنا پانی دوں؟" or "When is the salt flush?". It understands questions about today, tomorrow, the week, salt, heat and "why", and answers out loud from the live plan. Tap-to-ask chips and a text box work when the mic doesn't.
+- **🎮 Can you beat NakhlaWise?** The judge becomes the farmer for 12 weeks of the real 2025 summer, choosing litres per palm each week while the soil X-ray shows salt building up. Saving water gets punished by salt, and playing safe wastes water. The only winning move is the salt-flush insight. Strategies we tested: flat 350 L loses 5.4% of the dates; watering exactly the palm's need loses 3.9%; flat 450–600 L wastes 500–3,000 m³; need plus a flush when salt passes 3.5 wins.
+- **🩻 Soil X-ray.** Animated year under three palms (routine, water-saving app, NakhlaWise) with salt in every 15 cm of the root zone.
+- **🧮 How today's number is decided.** Every step of the decision for any day: ET₀ → palm need → refill → salt check → smallest flush.
+- **📵 Test with no signal** and **📱 Send SMS**: works offline and sends a plain SMS from any phone.
+- **QR code** in the header card: judges scan it and have the app on their own phones.
 
 ## Real SMS: automatic, every morning at 5:30
 
@@ -118,6 +127,7 @@ css/style.css         design (mobile-first, RTL for Arabic/Urdu)
 js/engine.js          soil water + salt model and decision logic (runs in browser and Node)
 js/messages.js        daily message in English/Arabic/Urdu + one-segment SMS (shared by app and sender)
 js/app.js             UI: forecast, message, soil X-ray animation, charts
+js/extras.js          voice assistant, "Can you beat NakhlaWise?" challenge, QR code
 data/weather2025.js   bundled real 2025 weather (offline)
 sw.js                 offline cache
 test/                 automated tests (run on every push by GitHub Actions)

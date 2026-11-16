@@ -22,6 +22,7 @@
     <nav class="nav-links" aria-label="Sections">
       <a href="#today">Today</a>
       <a href="#xray">Soil X-ray</a>
+      <a href="#challenge">Challenge</a>
       <a href="#proof">Proof</a>
       <a href="#how">How it works</a>
     </nav>
@@ -54,6 +55,7 @@
           <span class="stat-label">days with root salt above the palm’s limit (NakhlaWise, 2025)</span>
         </div>
         <p class="stat-foot" id="heroFoot">Simulated on real 2025 weather.</p>
+        <div class="qr-row"><div class="qr" id="qrBox" aria-label="QR code to open this app on your phone"></div><p><b>Try it on your phone</b>Scan with the camera. Works offline once opened.</p></div>
       </div>
     </section>
 
@@ -132,6 +134,7 @@
             <a class="btn btn-sms" id="smsLink" title="Opens your phone’s SMS app with the message ready">📱 Send SMS</a>
             <button class="btn btn-ghost" id="speakBtn" type="button">🔊 Read aloud</button>
             <button class="btn btn-ghost" id="smsBtn" type="button">Copy SMS</button>
+            <button class="btn btn-ask" id="askBtn" type="button">🎙 Ask a question by voice</button>
           </div>
           <p class="sms-preview" id="smsPreview"></p>
         </div>
@@ -179,9 +182,47 @@
     </section>
 
     <!-- PROOF -->
+    <section class="challenge" id="challenge" aria-labelledby="gameTitle">
+      <div class="section-head">
+        <p class="kicker">03 · Your turn</p>
+        <h2 id="gameTitle">Can you beat NakhlaWise?</h2>
+        <p>You’re the farmer. It’s summer 2025 in <span id="gameLoc">Al Ain</span>, the well is brackish, and you have 12 weeks. Each week, choose how much water each palm gets. Keep all your dates <b>and</b> use less water than NakhlaWise. Most people can’t.</p>
+      </div>
+      <div class="game card">
+        <div class="game-left">
+          <div class="scene game-scene"><span class="sun" id="gameSun"></span><div id="gamePalm"></div></div>
+          <div class="game-soil" id="gameSoil"></div>
+          <div class="meters game-meters">
+            <div class="meter"><b id="gWater">0</b><span>m³ used</span></div>
+            <div class="meter"><b id="gSalt">0</b><span>salt-damage days</span></div>
+            <div class="meter"><b id="gHealth">100%</b><span>harvest</span></div>
+          </div>
+        </div>
+        <div class="game-right">
+          <div class="game-play" id="gamePlay">
+            <p class="game-week" id="gWeek">Week 1 of 12</p>
+            <h3 class="game-dates" id="gDates"></h3>
+            <p class="game-forecast" id="gForecast"></p>
+            <label class="game-slider">
+              <span>Water per palm, per day</span>
+              <b id="gLitresVal">300 L</b>
+              <input type="range" id="gLitres" min="100" max="900" step="10" value="300" aria-label="Litres per palm per day">
+            </label>
+            <div class="game-buttons">
+              <button class="btn btn-primary" id="gGo" type="button">Water this week ▸</button>
+              <button class="btn btn-ghost" id="gFlush" type="button" aria-pressed="false">🧂 Add a salt flush (+500 L once)</button>
+            </div>
+            <p class="game-feedback" id="gFeedback" aria-live="polite"></p>
+          </div>
+          <div class="game-result" id="gameResult" hidden></div>
+          <ol class="game-log" id="gLog" aria-label="Your weeks"></ol>
+        </div>
+      </div>
+    </section>
+
     <section class="proof" id="proof" aria-labelledby="proofTitle">
       <div class="section-head">
-        <p class="kicker">03 · Proof on real data</p>
+        <p class="kicker">04 · Proof on real data</p>
         <h2 id="proofTitle">A whole season, four ways to decide</h2>
         <p id="proofSub">Real daily weather for 2025 (ERA5 reanalysis via Open-Meteo), whole farm.</p>
       </div>
@@ -203,7 +244,7 @@
     <!-- DESERT RULES -->
     <section class="rules" aria-labelledby="rulesTitle">
       <div class="section-head">
-        <p class="kicker">04 · Built for the desert</p>
+        <p class="kicker">05 · Built for the desert</p>
         <h2 id="rulesTitle">The desert rules</h2>
       </div>
       <div class="rules-grid">
@@ -229,7 +270,7 @@
     <!-- HOW -->
     <section class="how" id="how" aria-labelledby="howTitle">
       <div class="section-head">
-        <p class="kicker">05 · How it works</p>
+        <p class="kicker">06 · How it works</p>
         <h2 id="howTitle">From weather to a decision</h2>
       </div>
       <ol class="pipeline">
@@ -251,6 +292,32 @@
     </section>
   </main>
 
+  <button class="fab" id="fabMic" type="button" aria-label="Ask NakhlaWise by voice">🎙<span>Ask</span></button>
+
+  <div class="voice-sheet" id="voiceSheet" hidden>
+    <div class="voice-card" role="dialog" aria-modal="true" aria-labelledby="voiceTitle">
+      <div class="voice-head">
+        <div><h3 id="voiceTitle">Ask NakhlaWise</h3><small>Speak in English, Arabic or Urdu. It answers out loud.</small></div>
+        <button class="icon-btn" id="voiceClose" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="lang-switch voice-lang" role="group" aria-label="Voice language">
+        <button class="chip" data-vlang="en" type="button">English</button>
+        <button class="chip" data-vlang="ar" type="button">العربية</button>
+        <button class="chip" data-vlang="ur" type="button">اردو</button>
+      </div>
+      <div class="voice-chat" id="voiceChat" aria-live="polite"></div>
+      <div class="mic-wrap">
+        <button class="mic" id="micBtn" type="button" aria-label="Tap and speak"><span>🎙</span></button>
+        <p class="mic-hint" id="micHint">Tap the microphone and ask</p>
+      </div>
+      <div class="voice-suggest" id="voiceSuggest"></div>
+      <form class="voice-type" id="voiceForm">
+        <input id="voiceInput" type="text" autocomplete="off" placeholder="…or type a question" aria-label="Type a question">
+        <button class="btn btn-primary" type="submit">Ask</button>
+      </form>
+    </div>
+  </div>
+
   <footer class="foot">
     <p>NakhlaWise · built solo for Breaking Bytes 2026 · weather data © Open-Meteo (CC BY 4.0)</p>
   </footer>
@@ -259,6 +326,8 @@
   <script src="data/weather2025.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/messages.js"></script>
+  <script src="vendor/qrcode.min.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/extras.js"></script>
 </body>
 </html>

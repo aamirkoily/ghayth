@@ -176,6 +176,7 @@
     renderXrayFrame();
     renderTable();
     renderCharts();
+    document.dispatchEvent(new CustomEvent('nw:update'));
   }
 
   /* ---------- hero ---------- */
@@ -310,13 +311,18 @@
   }
 
   function speak() {
+    speakText(buildMessage(state.lang).split('\n').slice(0, -1).join('. '), state.lang);
+  }
+
+  /* Speak any text in en / ar / ur, picking the best voice on this device. */
+  function speakText(raw, lang) {
     if (!('speechSynthesis' in window)) { alert('Voice is not supported on this device.'); return; }
-    const text = buildMessage(state.lang)
+    const text = raw
       .replace(/[\u{1F300}-\u{1FAFF}☀-➿]/gu, '')
-      .replace(/m³/g, state.lang === 'en' ? ' cubic metres' : ' م³')
-      .split('\n').slice(0, -1).join('. ');
+      .replace(/m³/g, lang === 'en' ? ' cubic metres' : lang === 'ar' ? ' متر مكعب' : ' مکعب میٹر')
+      .replace(/dS\/m/g, lang === 'en' ? ' deci-siemens' : '');
     const u = new SpeechSynthesisUtterance(text);
-    const want = T[state.lang].voice;
+    const want = T[lang].voice;
     const voices = speechSynthesis.getVoices();
     const v = voices.find((x) => x.lang.toLowerCase().startsWith(want)) ||
       (want === 'ur' ? voices.find((x) => x.lang.toLowerCase().startsWith('hi')) : null);
@@ -591,6 +597,7 @@
       document.querySelectorAll('.lang-switch .chip').forEach((x) => x.classList.toggle('active', x === b));
       state.lang = b.dataset.lang;
       renderMessage();
+      document.dispatchEvent(new CustomEvent('nw:lang'));
     }));
     $('speakBtn').addEventListener('click', speak);
     $('smsBtn').addEventListener('click', async () => {
@@ -614,6 +621,15 @@
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
   }
+
+  // Small bridge for js/extras.js (voice assistant, challenge, QR).
+  window.NW = {
+    state, speakText, coords, fmt, saltColor, leafColor, PALM_SVG,
+    setLang(lang) {
+      const chip = document.querySelector('.lang-switch .chip[data-lang="' + lang + '"]');
+      if (chip) chip.click();
+    },
+  };
 
   init();
 })();
