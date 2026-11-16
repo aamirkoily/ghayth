@@ -23,6 +23,19 @@
     { sel: '.hero', say: () => 'No sensors, one SMS, works offline, and the whole app speaks Arabic. Ghayth: save water, keep the harvest. Scan the code to try it.' },
   ];
 
+  // Demo-video version (?video=1): opens with a minute on why this angle, then the product.
+  const by = (sel) => STEPS.find((s) => s.sel === sel);
+  const VIDEO_STEPS = [
+    by('.hero'),
+    { sel: '#xray', act: () => click('#playBtn'), say: () => 'Why this angle? Every smart farming idea promises to cut water. But UAE groundwater is pumped twenty five times faster than it refills, and it is getting saltier. Every litre leaves salt in the soil, and the only thing that removes it is extra water draining past the roots.' },
+    { sel: '#proof', say: () => 'So the usual water-saving app quietly salts the soil. On real 2025 weather it loses about ' + txt('#heroNaive', '13%') + ' of the dates, and keeps the roots over the palm’s salt limit most of the year. The textbook fix, extra water every single day, wastes water instead.' },
+    { sel: '#judges', say: () => 'So the real decision is not just how much to water. It is when to spend water washing out the salt. That is what Ghayth decides, every day, for every farm. Here is how it works.' },
+    by('#today'), by('.reply-row'),
+    { sel: '#proof', say: () => 'The result: ' + txt('#heroFao', '14%') + ' less water than the official FAO salt rule, with the same full harvest, and zero days over the salt limit. The model matches published sap-flow measurements from UAE farms, and twenty two automated tests check it.' },
+    by('#business'), by('#impact'), by('#stress'), by('.hero'),
+  ];
+  const VIDEO = /[?&]video=1/.test(location.search);
+
   let running = false;
   let bar;
 
@@ -64,8 +77,9 @@
     document.body.classList.add('touring');
     const b = ensureBar();
     b.hidden = false;
-    for (let i = 0; i < STEPS.length && running; i++) {
-      const s = STEPS[i];
+    const list = VIDEO ? VIDEO_STEPS : STEPS;
+    for (let i = 0; i < list.length && running; i++) {
+      const s = list[i];
       const el = $(s.sel);
       document.querySelectorAll('.tour-focus').forEach((x) => x.classList.remove('tour-focus'));
       if (el) {
@@ -73,7 +87,7 @@
         el.classList.add('tour-focus');
       }
       const line = s.say();
-      b.querySelector('.tour-step').textContent = (i + 1) + ' / ' + STEPS.length;
+      b.querySelector('.tour-step').textContent = (i + 1) + ' / ' + list.length;
       b.querySelector('.tour-text').textContent = line;
       await sleep(700);
       const action = s.act ? Promise.resolve(s.act()) : Promise.resolve();
@@ -95,5 +109,5 @@
   if (btn) btn.addEventListener('click', start);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && running) stop(); });
   if (/[?&]tour=1/.test(location.search)) setTimeout(start, 1500);
-  window.NWTour = { start, stop, STEPS };
+  window.NWTour = { start, stop, STEPS, VIDEO_STEPS };
 })();
