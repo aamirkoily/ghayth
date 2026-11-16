@@ -9,12 +9,15 @@
   const setRange = (s, v) => { const el = $(s); if (el) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); } };
 
   const STEPS = [
+    // (block: 'center' for small targets)
     { sel: '.hero', say: () => 'This is Ghayth, Arabic for the rain that ends a drought. Desert date farms water by habit, and their wells are salty. Water-saving apps cut water, so salt is never washed out, and the harvest quietly dies. Ghayth saves water without salting the palms.' },
-    { sel: '#today', say: () => 'Every morning the farm gets one message: how many litres per palm today, and the one day this week to flush the salt. It works on any phone by SMS, in Arabic, Urdu or English, and it is sent automatically at five thirty.' },
+    { sel: '#today', say: () => 'Every morning the farm gets one message: litres per palm, how long to open the valve before sunrise, and the one day this week to flush the salt. It works on any phone by SMS, in Arabic, Urdu or English, sent automatically at five thirty.' },
+    { sel: '.reply-row', act: async () => { await sleep(3500); click('[data-reply="missed"]'); await sleep(7000); click('[data-reply="done"]'); },
+      say: () => 'Real farms miss days. If the pump breaks, the worker replies zero. The soil model takes what really happened and re-plans the week: tomorrow refills the dry soil, and the salt flush moves if it needs to.' },
     { sel: '#traceDay', say: () => 'Every number is explained. Here is today’s maths, from the live forecast to the litres, step by step, so a farm manager can trust it.' },
     { sel: '#xray', act: () => click('#playBtn'), say: () => 'This is a soil X-ray of a real 2025 year in Al Ain. Watch salt build up in the root zone when the farm only refills water, and watch Ghayth flush it below the roots just before it hurts the palm.' },
     { sel: '#challenge', say: () => 'Judges can try it themselves: water a farm through a summer heatwave and try to beat Ghayth. Guessing a flat amount either wastes water or salts the roots.' },
-    { sel: '#proof', say: () => 'The proof, on real weather for a full year. The water-only app loses more than ten percent of the harvest. The textbook FAO rule keeps the harvest but over-waters every single day. Ghayth keeps the full harvest with ' + txt('#heroFao', '14%') + ' less water than FAO.' },
+    { sel: '#proof', say: () => 'The proof, on real weather for a full year. The water-only app loses more than ten percent of the harvest. The textbook FAO rule keeps the harvest but over-waters every single day. Ghayth keeps the full harvest with ' + txt('#heroFao', '14%') + ' less water than FAO. And the model matches published sap-flow measurements on UAE date palms.' },
     { sel: '#business', act: async () => { await sleep(2500); setRange('#waterCost', 3); await sleep(4000); setRange('#waterCost', 1); }, say: () => 'And it is a business. Ghayth chooses the salt target that makes the farm the most money, given its water price and date price. Here that is ' + txt('#bizKpis .biz-kpi b', 'AED 1,892').replace(/^[+−]/, '') + ' more profit a year than the current routine. Raise the water price and it re-plans instantly, and warns when the water costs more than the dates are worth.' },
     { sel: '#advisers', say: () => 'One adviser or co-op can watch many farms: who needs a flush this week, who is over the salt limit, and how much water every farm will use today. One dirham per palm per year pays for it many times over.' },
     { sel: '.rules', say: () => 'Built for desert rules: every litre has a job, it works with one bar of signal or none at all, and it needs no sensors, just a twenty dollar salinity pen and any phone.' },
@@ -67,7 +70,7 @@
       const el = $(s.sel);
       document.querySelectorAll('.tour-focus').forEach((x) => x.classList.remove('tour-focus'));
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: s.sel === '#traceDay' ? 'center' : 'start' });
+        el.scrollIntoView({ behavior: 'smooth', block: s.sel === '#traceDay' || s.sel === '.reply-row' ? 'center' : 'start' });
         el.classList.add('tour-focus');
       }
       const line = s.say();

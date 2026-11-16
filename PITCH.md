@@ -1,6 +1,6 @@
 # Ghayth · demo and pitch script
 
-Total: about 3 minutes. No time or nerves? Press **▶ 2-minute guided tour** and it narrates the whole app by itself. Practise twice with a timer. Before you start, open the live link on your laptop **and** your phone, and close the voice sheet if it's open.
+Total: about 3 minutes. For Arabic-speaking judges, open `?lang=ar` (or press عربي) and the whole page switches. No time or nerves? Press **▶ 2-minute guided tour** and it narrates the whole app by itself. Practise twice with a timer. Before you start, open the live link on your laptop **and** your phone, and close the voice sheet if it's open.
 
 Live: https://aamirkoily.github.io/ghayth/
 
@@ -26,6 +26,8 @@ Press **▶ Play the year** and talk over it:
 
 - Point at the bars: "[range] litres a day, following the heat, and one salt flush on [day]."
   (If no flush shows, drag **Soil salt today** to about 3.6.)
+- Point at the valve line: "Workers don't measure litres, they open a valve. So it says 3 hours, start at 4 am, done just after sunrise."
+- Tap **0 · Didn't water** under the phone: "Pump broke? The worker replies zero. Watch: tomorrow refills, the week re-plans." Then tap **1 · Done** again.
 - Open **How today's number is decided** → pick the **flush** day → one breath through the 5 steps.
 - **The voice moment.** Tap **🎙 Ask**, choose **العربية** and ask out loud: *"كم ماء اليوم؟"* ("How much water today?"). It answers out loud in Arabic. Then tap **اردو** and tap *"نمک کی دھلائی کب ہے؟"* ("When is the salt flush?").
   > "Owners speak Arabic, most farm workers in the UAE speak Urdu, and many don't read. So they just ask."
@@ -41,7 +43,7 @@ Press **▶ Play the year** and talk over it:
 
 ## 2:30 – 3:00 · Proof, profit, close
 
-> "A full year on real weather: 14% less water than the FAO textbook salt rule, same full harvest, zero days above the salt limit. These are automated tests, not slides: 19 of them, including one proving the model never invents water or salt."
+> "A full year on real weather: 14% less water than the FAO textbook salt rule, same full harvest, zero days above the salt limit. These are automated tests, not slides: 21 of them, including one proving the model never invents water or salt."
 
 - Scroll to **05 · The business case** and drag the **water cost** slider from 1 to 3:
   > "And it's a business. Ghayth picks the salt target that earns this farm the most: here AED 1,900 a year more than its routine, with the same water. Make water expensive and it re-plans, and warns when the water costs more than the dates are worth. Advisers pay one dirham per palm a year. The farm's gain is about nine times that."
@@ -61,10 +63,12 @@ Press **▶ Play the year** and talk over it:
 | The core | 30% | Today plan + "How today's number is decided" + proof table vs the grower's routine + profit table (+AED 1,892/yr vs routine) |
 | Your angle | 25% | Salt is the hidden problem: Soil X-ray + the judges losing the Challenge |
 | Desert rules | 20% | 14% less water than FAO, offline button, one SMS, $20 pen, Arabic/Urdu voice for farmers who don't read |
-| Execution | 15% | FAO-56/FAO-29 science, mass-balanced 8-layer model, 19 tests on GitHub Actions, offline PWA, no build step, daily SMS on a schedule |
+| Execution | 15% | FAO-56/FAO-29 science, mass-balanced 8-layer model, 21 tests on GitHub Actions, offline PWA, no build step, daily SMS on a schedule |
 | Demo and pitch | 10% | Voice moment + judges playing the Challenge + the narrated tour (▶ 2-minute guided tour) as a fallback |
 
 ## Likely judge questions
+
+**Is the model realistic?** Scroll to **🔬 Model check**. Our simulated palm uses 95 m³ a year; ICBA's sap-flow survey of 10 Abu Dhabi farms found a median of 70, with 10% of trees over 100. The published advice is to irrigate at 1.5 × ETc; our FAO baseline is 1.48 and Ghayth is 1.28 (Al-Muaini et al. 2019).
 
 **Is this real data?** The weather is real: 2025 ERA5 via Open-Meteo, plus the live forecast. The soil is modelled with standard FAO parameters for sandy soil, and harvest is a relative index. It's all in "What is real, what is modelled" at the bottom of the page.
 

@@ -364,6 +364,7 @@ body.sheet-open .fab { display: none; }
   .biz-grid, .model-grid { grid-template-columns: 1fr; }
   .game-left { max-width: 420px; width: 100%; justify-self: center; }
   .net-badge { margin-inline-start: auto; }
+  .lang-toggle { margin-inline-start: auto; }
 }
 @media (max-width: 720px) {
   section { margin-top: 56px; }
@@ -427,3 +428,14 @@ body.touring .fab { display: none; }
 .check-table td.good b { color: var(--leaf); }
 .check-foot { font-size: .78rem !important; }
 .check-foot a { color: var(--palm-2); }
+
+/* ARABIC PAGE (dir=rtl) */
+.lang-toggle { font: 700 .85rem "Noto Kufi Arabic", var(--sans); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--palm); cursor: pointer; }
+.lang-toggle:hover { background: #e3f1e8; }
+.lang-toggle[lang="en"] { font-family: var(--sans); }
+html[dir="rtl"] body { font-family: "Noto Naskh Arabic", var(--sans); }
+html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4, html[dir="rtl"] .stat-num, html[dir="rtl"] .biz-kpi b { font-family: "Noto Kufi Arabic", var(--display); letter-spacing: 0; line-height: 1.35; }
+html[dir="rtl"] .kicker, html[dir="rtl"] th { letter-spacing: 0; }
+html[dir="rtl"] .lede, html[dir="rtl"] p, html[dir="rtl"] li { line-height: 1.8; }
+html[dir="rtl"] .kpi-table td, html[dir="rtl"] .kpi-table th { text-align: start; }
+.lang-toggle + .net-badge { margin-inline-start: 0 !important; }

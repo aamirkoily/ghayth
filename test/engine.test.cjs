@@ -108,3 +108,28 @@ test('profit optimiser: dearer water pushes the salt target up (less flushing)',
   assert.ok(dear.best.target >= cheap.best.target, cheap.best.target + ' → ' + dear.best.target);
   assert.ok(dear.best.econ.waterM3 <= cheap.best.econ.waterM3, 'uses less water when water is dear');
 });
+
+test('farmer reply: a missed day is re-planned from what really happened', () => {
+  const fc = { time: [], et0: [], rain: [] };
+  for (let i = 0; i < 7; i++) { fc.time.push('2026-07-' + (10 + i)); fc.et0.push(9); fc.rain.push(0); }
+  const base = E.plan(fc, { ece0: 3.0 });
+  const missed = E.plan(fc, { ece0: 3.0, given: { 0: 0 } });
+  assert.equal(missed[0].litres, 0);
+  assert.equal(missed[0].planned, base[0].litres);
+  assert.ok(missed[1].litres > base[1].litres, 'tomorrow refills the dry soil: ' + base[1].litres + ' → ' + missed[1].litres);
+  assert.ok(missed.every((d) => d.ece <= 4.0 + 1e-9), 'salt still kept under the palm limit');
+});
+
+test('valve schedule: litres become run-time that ends just after a real sunrise', () => {
+  const M = require('../js/messages.js');
+  // Al Ain sunrise: about 05:30 in late June, about 06:35 in mid-November (UAE time).
+  assert.ok(Math.abs(M.sunrise('2026-06-21', 24.21, 55.74) - 5.5) < 0.1);
+  assert.ok(Math.abs(M.sunrise('2026-11-16', 24.21, 55.74) - 6.58) < 0.1);
+  const s = M.schedule(192, { flow: 64, lat: 24.21, lon: 55.74 }, '2026-11-16');
+  assert.equal(s.mins, 180);
+  assert.equal(s.h, 3);
+  assert.equal(M.schedule(192, { palms: 200 }, '2026-11-16'), null, 'no flow given → no schedule');
+  const plan = [];
+  for (let i = 0; i < 7; i++) plan.push({ time: '2026-11-' + (16 + i), litres: 4999, flush: i === 3 ? 3000 : 0, habit: 250 });
+  assert.ok(M.sms(plan, { palms: 100000, flow: 64 }).length <= 160, 'worst case still one SMS');
+});

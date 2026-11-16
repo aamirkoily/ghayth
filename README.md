@@ -28,7 +28,7 @@ So the real decision a date farmer faces is not just *how much to water*, but
 | | |
 |---|---|
 | **Who** | Owners and workers on small to mid-size date-palm farms (UAE oases: Al Ain, Liwa). Workers are often Urdu-speaking; owners Arabic-speaking. |
-| **Decision** | Litres per palm, every day, plus the day and size of a **salt flush** only when soil salt nears the palm's limit. |
+| **Decision** | Litres per palm, every day, turned into **how long to open the valve and when to start** (ending just after sunrise, when evaporation is lowest), plus the day and size of a **salt flush** only when soil salt nears the palm's limit. |
 | **How** | One message a day (WhatsApp, or an SMS under 160 characters) in **Arabic, Urdu or English**, plus a **voice assistant**: farmers who don't read just ask out loud and hear the answer. |
 | **Inputs** | Location, number of palms, well-water salinity, a soil reading from a **$20 EC meter**, irrigation type, current routine. No sensors in the ground. |
 
@@ -72,6 +72,20 @@ Al Ain, 200 palms, 4 dS/m well, water AED 1/m³, 60 kg/palm at AED 5/kg (illustr
 
 **Adviser view:** one agronomist sees every farm on one screen. Each farm gets a plan from its own well, soil reading and live forecast, sorted by urgency: who is over the salt limit, who needs a flush this week, and the water each farm needs today. The demo uses 8 **fictional** farms.
 
+## Model check against UAE field measurements
+
+The model was not tuned to these numbers. They are sap-flow measurements on UAE date palms (ICBA with Plant & Food Research, NZ):
+
+| Check | Published UAE field data | Ghayth model |
+|---|---|---|
+| Palm water use (ETc) | Median **70 m³/tree/yr** on 10 Abu Dhabi commercial farms; 10% of trees over 100 m³ [1]. 43–57 m³ at a research station [2]. | **95 m³/yr**: a large mature palm, upper part of the measured range |
+| Recommended irrigation | **1.5 × ETc** (25% safety factor + 25% salt-leaching fraction) [1, 2] | Our "FAO rule" baseline = **1.48 × ETc** (matches). Ghayth = **1.28 × ETc**, 14% less, 0 days over the salt limit |
+| Dates per palm | 43–89 kg/tree at 5 dS/m (Khalas ≈ 43, Lulu 89) [2] | Business-case default 60 kg (editable) |
+| Context | UAE groundwater is pumped at **25× its recharge rate** and is getting saltier [1] | Every m³ saved stays in the aquifer |
+
+[1] Al-Muaini et al. 2019, *Water use and irrigation requirements for date palms on commercial farms in the hyper-arid United Arab Emirates*, Agricultural Water Management 223, [doi:10.1016/j.agwat.2019.105702](https://doi.org/10.1016/j.agwat.2019.105702).
+[2] Al-Muaini et al. 2019, *Water requirements for irrigation with saline groundwater of three date-palm cultivars with different salt-tolerances in the hyper-arid UAE*, Agricultural Water Management 222: 213–220, [doi:10.1016/j.agwat.2019.05.022](https://doi.org/10.1016/j.agwat.2019.05.022).
+
 **Why it saves water:** salt removed per litre of drainage equals the salt concentration of that drainage. Flushing only when the soil is near (but below) the limit means every flush litre carries out the most salt possible. The FAO rule leaches a constant fraction every day, even when the soil is clean.
 
 ## How it works
@@ -97,6 +111,9 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 
 ## Highlights in the app
 
+- **⏱ Valve time, not litres.** Workers open a valve and wait, so the plan says "open the valve 3 h 00 min, start 04:06" from the drippers per palm and their flow. The run ends 30 minutes after sunrise (computed for the farm's position and date) to water in the cool hours with less evaporation.
+- **🚱 "Didn't water today?"** Reply 1 = done, 0 = didn't water, or the litres actually given. The soil model takes what really happened and re-plans the week: tomorrow refills the dry soil, and the flush moves if salt needs it. The SMS asks for the same reply.
+- **عربي: the whole page in Arabic**, right-to-left, including the live tables and numbers. Use the header button, or open [`?lang=ar`](https://aamirkoily.github.io/ghayth/?lang=ar).
 - **▶ 2-minute guided tour.** One button scrolls through the whole app with captions and spoken narration, including a live change of the water price. Open [`?tour=1`](https://aamirkoily.github.io/ghayth/?tour=1) to start it automatically.
 - **💰 Profit optimiser and 🧑‍🌾 adviser view.** See the business case above.
 - **🎙 Voice assistant (Arabic, Urdu, English).** Tap *Ask* and say "كم ماء اليوم؟", "آج کتنا پانی دوں؟" or "When is the salt flush?". It understands questions about today, tomorrow, the week, salt, heat and "why", and answers out loud from the live plan. Tap-to-ask chips and a text box work when the mic doesn't.
@@ -142,7 +159,7 @@ No build step. Plain HTML, CSS and JavaScript.
 
 ```bash
 npm start            # serves on http://localhost:5173 (python -m http.server)
-npm test             # 19 tests: mass balance, headline claims, message format, profit optimiser
+npm test             # 21 tests: mass balance, headline claims, messages, profit optimiser, missed-day re-plan, valve schedule
 npm run compare      # print the season and 3-year comparisons in the terminal
 npm run send:dry     # print today's SMS for each farm in farms.example.json
 ```
@@ -158,6 +175,7 @@ js/app.js             UI: forecast, message, soil X-ray animation, charts
 js/extras.js          voice assistant, "Can you beat Ghayth?" challenge, QR code
 js/business.js        profit optimiser, unit economics, adviser (multi-farm) view
 js/tour.js            narrated 2-minute guided tour (?tour=1)
+js/i18n.js            whole page in Arabic, right-to-left (?lang=ar)
 data/weather2025.js   bundled real 2025 weather (offline)
 sw.js                 offline cache
 test/                 automated tests (run on every push by GitHub Actions)
@@ -168,12 +186,13 @@ tools/                comparison scripts
 
 ## Next steps
 
-1. Two-way SMS: a Twilio webhook that logs replies ("1 = done", "2 = pump problem") and corrects the soil state when a day's watering was missed.
+1. Receive the SMS replies automatically (a Twilio webhook) so "0 = didn't water" re-plans without the app. The re-planning itself is built and tested.
 2. Calibrate the soil model per farm from a monthly EC pen reading (the "soil salt today" input already resets the plan).
 3. Add soil types (loamy, gravelly) and other crops (alfalfa, vegetables in greenhouses).
 
 ## References
 
+- Al-Muaini et al., 2019. Agricultural Water Management 222: 213–220 and 223: 105702 (UAE date palm water use).
 - Allen et al., 1998. *Crop Evapotranspiration*, FAO Irrigation and Drainage Paper 56.
 - Ayers & Westcot, 1985. *Water Quality for Agriculture*, FAO Irrigation and Drainage Paper 29.
 - Open-Meteo Historical Weather API (ERA5) and Forecast API, CC BY 4.0.

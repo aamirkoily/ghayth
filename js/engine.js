@@ -4,10 +4,10 @@
  * Model (per palm, daily time step):
  *  - Crop water need: ETc = ET0 x Kc x Kr x spacing^2            (FAO-56)
  *      ET0 in mm/day, 1 mm over 1 m^2 = 1 litre.
- *  - Root zone: 4 layers of sandy soil, water + salt tracked in each.
+ *  - Root zone: 8 layers of sandy soil, water + salt tracked in each.
  *      Water entering the top layer fills it to field capacity, the rest drains
  *      down and carries salt with it (cascade / "tipping bucket" model).
- *      Roots take water 40/30/20/10 % from top to bottom; salt stays behind.
+ *      Roots take water 20 % (top) to 6 % (bottom); salt stays behind.
  *  - Soil salinity reported as ECe (saturated paste EC, dS/m) = salt / saturated volume.
  *  - Date palm salt tolerance: no yield loss up to ECe 4.0 dS/m,
  *      then -3.6 % yield per extra dS/m                         (FAO-29, Maas-Hoffman)
