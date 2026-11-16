@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NakhlaWise · Salt-aware watering for date palms</title>
+  <meta name="description" content="A salt-aware irrigation advisor for desert date farms. Saves water without letting salt kill the harvest. One message a day, any phone, works offline.">
+  <meta name="theme-color" content="#14382b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="NakhlaWise home">
+      <img src="assets/icon.svg" alt="" width="32" height="32">
+      <span>NakhlaWise <span class="brand-ar" lang="ar">نخلة وايز</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#today">Today</a>
+      <a href="#xray">Soil X-ray</a>
+      <a href="#proof">Proof</a>
+      <a href="#how">How it works</a>
+    </nav>
+    <span class="net-badge" id="netBadge" title="Data source">…</span>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Breaking Bytes · A-001 · Smart Farming for the Desert</p>
+        <h1>Save water <em>without</em> salting your palms.</h1>
+        <p class="lede">In the desert, the water-saving app everyone builds quietly kills the harvest: less water means salt is never washed out of the roots. NakhlaWise decides how much to water <strong>and</strong> exactly when to flush the salt, then sends it as one message a day, on any phone, in Arabic, Urdu or English.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#today">See today’s plan</a>
+          <a class="btn btn-ghost" href="#xray">Watch the soil X-ray ▸</a>
+        </div>
+      </div>
+      <div class="hero-stats" aria-live="polite">
+        <div class="stat">
+          <span class="stat-num" id="heroFao">–</span>
+          <span class="stat-label">less water than the textbook FAO salt rule, same harvest</span>
+        </div>
+        <div class="stat stat-warn">
+          <span class="stat-num" id="heroNaive">–</span>
+          <span class="stat-label">harvest lost by a typical “water-saving” app to salt</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="heroSalt">0</span>
+          <span class="stat-label">days with root salt above the palm’s limit (NakhlaWise, 2025)</span>
+        </div>
+        <p class="stat-foot" id="heroFoot">Simulated on real 2025 weather.</p>
+      </div>
+    </section>
+
+    <!-- FARM SETUP -->
+    <section class="setup card" id="setup" aria-labelledby="setupTitle">
+      <div class="section-head">
+        <h2 id="setupTitle">Your farm</h2>
+        <p>Five things a farmer already knows. Every number on this page updates live.</p>
+      </div>
+      <div class="setup-grid">
+        <label class="field">
+          <span>Location</span>
+          <select id="location">
+            <option value="al_ain">Al Ain oasis, UAE</option>
+            <option value="liwa">Liwa oasis, UAE</option>
+            <option value="geo">📍 My location (needs internet)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Number of palms</span>
+          <input id="palms" type="number" min="1" max="100000" value="200" inputmode="numeric">
+        </label>
+        <label class="field">
+          <span>Well water salinity <b id="ecwVal">4.0</b> dS/m <small id="ecwHint">brackish</small></span>
+          <input id="ecw" type="range" min="0.5" max="10" step="0.5" value="4">
+        </label>
+        <label class="field">
+          <span>Soil salt today <b id="eceNowVal">3.6</b> dS/m <small>from a $20 EC meter</small></span>
+          <input id="eceNow" type="range" min="1" max="8" step="0.1" value="3.6">
+        </label>
+        <label class="field">
+          <span>Irrigation system</span>
+          <select id="system">
+            <option value="0.9">Drip (90% efficient)</option>
+            <option value="0.8">Bubbler (80%)</option>
+            <option value="0.6">Flood / basin (60%)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Your routine now (litres per palm per day)</span>
+          <div class="pair">
+            <input id="habitSummer" type="number" min="0" max="3000" value="400" aria-label="Summer litres per palm per day">
+            <small>summer</small>
+            <input id="habitWinter" type="number" min="0" max="3000" value="250" aria-label="Winter litres per palm per day">
+            <small>winter</small>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <!-- TODAY -->
+    <section class="today" id="today" aria-labelledby="todayTitle">
+      <div class="section-head">
+        <p class="kicker">01 · The decision</p>
+        <h2 id="todayTitle">This week’s plan, in one message</h2>
+        <p>Live 7-day forecast → crop water need → soil-salt model → litres per palm, with salt flushes only when they’re needed. Sent once a day, so it works on a weak signal.</p>
+      </div>
+      <div class="today-grid">
+        <div class="phone" aria-label="Message preview">
+          <div class="phone-top">
+            <span class="avatar">🌴</span>
+            <div><b>NakhlaWise</b><small>daily farm advice</small></div>
+          </div>
+          <div class="chat">
+            <div class="bubble" id="msgBubble" dir="auto"></div>
+            <div class="bubble bubble-me">1</div>
+            <div class="bubble bubble-sys" id="msgAck">✅ Logged. Tomorrow’s plan arrives at 5:30 am.</div>
+          </div>
+          <div class="lang-switch" role="group" aria-label="Message language">
+            <button class="chip active" data-lang="en">English</button>
+            <button class="chip" data-lang="ar">العربية</button>
+            <button class="chip" data-lang="ur">اردو</button>
+          </div>
+          <div class="phone-actions">
+            <a class="btn btn-wa" id="waLink" target="_blank" rel="noopener">Send on WhatsApp</a>
+            <button class="btn btn-ghost" id="speakBtn" type="button">🔊 Read aloud</button>
+            <button class="btn btn-ghost" id="smsBtn" type="button">Copy SMS</button>
+          </div>
+          <p class="sms-preview" id="smsPreview"></p>
+        </div>
+
+        <div class="week">
+          <div class="week-head">
+            <h3>Next 7 days, litres per palm</h3>
+            <span class="legend"><i class="dot dot-water"></i>watering <i class="dot dot-flush"></i>salt flush <i class="tick-habit"></i>your routine</span>
+          </div>
+          <ol class="week-days" id="weekDays"></ol>
+          <div class="week-summary" id="weekSummary"></div>
+          <div class="trace card">
+            <div class="trace-head">
+              <h4>How today’s number is decided</h4>
+              <select id="traceDay" aria-label="Day to explain"></select>
+            </div>
+            <ol class="trace-steps" id="traceSteps"></ol>
+          </div>
+          <div class="why card-inner">
+            <h4>Why this beats the usual guess</h4>
+            <ul id="whyList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- X-RAY -->
+    <section class="xray" id="xray" aria-labelledby="xrayTitle">
+      <div class="section-head">
+        <p class="kicker">02 · The problem inside the problem</p>
+        <h2 id="xrayTitle">Soil X-ray: one year under three palms</h2>
+        <p>Same palm, same well, same real 2025 weather. Only the watering decision changes. Colours show salt in each 15 cm of the root zone. Salt always settles at the bottom; what the palm feels is the <b>root-zone average</b> (top-right badge). Above <b>4 dS/m</b> it starts losing dates.</p>
+      </div>
+      <div class="xray-controls">
+        <button class="btn btn-primary" id="playBtn" type="button" aria-label="Play">▶ Play the year</button>
+        <input id="dayRange" type="range" min="0" max="364" value="0" aria-label="Day of the year">
+        <span class="xray-date" id="xrayDate">1 Jan</span>
+        <span class="xray-weather" id="xrayWeather"></span>
+      </div>
+      <div class="xray-grid" id="xrayGrid"></div>
+      <div class="salt-scale" aria-hidden="true">
+        <span>0</span><div class="scale-bar"></div><span>16+ dS/m</span>
+        <em class="limit-mark">palm limit 4</em>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="proof" id="proof" aria-labelledby="proofTitle">
+      <div class="section-head">
+        <p class="kicker">03 · Proof on real data</p>
+        <h2 id="proofTitle">A whole season, four ways to decide</h2>
+        <p id="proofSub">Real daily weather for 2025 (ERA5 reanalysis via Open-Meteo), whole farm.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="kpi-table" id="kpiTable"></table>
+      </div>
+      <div class="charts">
+        <figure class="card chart-card">
+          <figcaption>Root-zone salt through the year (dS/m)</figcaption>
+          <div class="chart-box"><canvas id="saltChart" aria-label="Soil salinity chart"></canvas></div>
+        </figure>
+        <figure class="card chart-card">
+          <figcaption>Water used so far (m³, whole farm)</figcaption>
+          <div class="chart-box"><canvas id="waterChart" aria-label="Cumulative water chart"></canvas></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- DESERT RULES -->
+    <section class="rules" aria-labelledby="rulesTitle">
+      <div class="section-head">
+        <p class="kicker">04 · Built for the desert</p>
+        <h2 id="rulesTitle">The desert rules</h2>
+      </div>
+      <div class="rules-grid">
+        <article class="card rule">
+          <span class="rule-icon">💧</span>
+          <h3>Every litre has a job</h3>
+          <p id="ruleWater">Water follows the real daily heat, not the calendar. Extra water is only given to wash salt out, and only when salt is near the limit, when each litre carries out the most salt.</p>
+        </article>
+        <article class="card rule">
+          <span class="rule-icon">📶</span>
+          <h3>Works on one bar of signal</h3>
+          <p>One message a day, under 160 characters as SMS. The full 7-day plan arrives ahead, so a dead signal for a week changes nothing. This page installs and runs offline.</p>
+          <button class="btn btn-ghost" id="offlineBtn" type="button">📵 Test with no signal</button>
+        </article>
+        <article class="card rule">
+          <span class="rule-icon">🪙</span>
+          <h3>Costs about one EC meter</h3>
+          <p>No sensors in the ground. Free satellite-era weather data, a $20 salinity pen checked once a month, and any phone. Workers get it in Urdu, owners in Arabic.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section class="how" id="how" aria-labelledby="howTitle">
+      <div class="section-head">
+        <p class="kicker">05 · How it works</p>
+        <h2 id="howTitle">From weather to a decision</h2>
+      </div>
+      <ol class="pipeline">
+        <li><b>Weather</b><span>Daily evaporation demand (ET₀), heat, rain. Live forecast + 2025 history.</span></li>
+        <li><b>Palm need</b><span>ETc = ET₀ × Kc 0.9 × canopy 0.7 × spacing² (FAO-56).</span></li>
+        <li><b>Soil-salt model</b><span>8 layers of sandy soil. Water carries salt down; roots leave it behind.</span></li>
+        <li><b>Decision</b><span>Refill what the palm used. Flush only when salt nears 4 dS/m (FAO-29 limit).</span></li>
+        <li><b>Message</b><span>Litres per palm, farm total, flush day. Arabic, Urdu, English, voice.</span></li>
+      </ol>
+      <details class="card honest">
+        <summary>What is real, what is modelled</summary>
+        <ul>
+          <li><b>Real:</b> 2025 daily weather for Al Ain and Liwa (Open-Meteo historical API, ERA5), and the live 7-day forecast.</li>
+          <li><b>Standard science:</b> FAO-56 crop water need, FAO-29 date palm salt tolerance (no loss up to ECe 4 dS/m, then −3.6% per dS/m), FAO-29 leaching rule for comparison.</li>
+          <li><b>Modelled:</b> the soil (sandy, 1.2 m root zone, 8 layers, field capacity 10%). Harvest is a relative index, not kg.</li>
+          <li><b>Your inputs:</b> well salinity, soil salt reading, palm count, current routine. The farmer’s routine is whatever they enter; defaults are illustrative.</li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>NakhlaWise · built solo for Breaking Bytes 2026 · weather data © Open-Meteo (CC BY 4.0)</p>
+  </footer>
+
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="data/weather2025.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

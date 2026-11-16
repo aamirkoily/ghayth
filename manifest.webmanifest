@@ -1,0 +1,9 @@
+{
+  "name": "NakhlaWise · salt-aware watering for date palms",
+  "short_name": "NakhlaWise",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f1e7",
+  "theme_color": "#14382b",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

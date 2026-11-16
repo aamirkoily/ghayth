@@ -1,0 +1,12 @@
+{
+  "name": "nakhlawise",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Salt-aware irrigation advisor for desert date farms",
+  "scripts": {
+    "test": "node --test test/engine.test.cjs",
+    "start": "python -m http.server 5173",
+    "compare": "node tools/sim.cjs && node tools/multi.cjs"
+  },
+  "license": "MIT"
+}
