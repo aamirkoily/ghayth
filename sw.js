@@ -1,5 +1,5 @@
 // Offline support: the app shell and 2025 weather are cached, so the page works with no signal.
-const CACHE = 'ghayth-v8';
+const CACHE = 'ghayth-v9';
 const SHELL = ['./', 'index.html', 'css/style.css', 'js/engine.js', 'js/messages.js', 'js/app.js', 'js/extras.js', 'js/business.js', 'js/impact.js', 'js/wallplan.js', 'js/tour.js', 'js/i18n.js', 'vendor/qrcode.min.js', 'data/weather2025.js',
   'vendor/chart.umd.min.js', 'assets/icon.svg', 'manifest.webmanifest'];
 

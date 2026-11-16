@@ -32,7 +32,7 @@
     { sel: '#judges', say: () => 'So the real decision is not just how much to water. It is when to spend water washing out the salt. That is what Ghayth decides, every day, for every farm. Here is how it works.' },
     by('#today'), by('.reply-row'),
     { sel: '#proof', say: () => 'The result: ' + txt('#heroFao', '14%') + ' less water than the official FAO salt rule, with the same full harvest, and zero days over the salt limit. The model matches published sap-flow measurements from UAE farms, and twenty two automated tests check it.' },
-    by('#business'), by('#impact'), by('#stress'), by('.hero'),
+    by('#business'), by('#impact'), by('#stress'), STEPS[STEPS.length - 1],
   ];
   const VIDEO = /[?&]video=1/.test(location.search);
 
