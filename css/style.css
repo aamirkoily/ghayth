@@ -439,3 +439,67 @@ html[dir="rtl"] .kicker, html[dir="rtl"] th { letter-spacing: 0; }
 html[dir="rtl"] .lede, html[dir="rtl"] p, html[dir="rtl"] li { line-height: 1.8; }
 html[dir="rtl"] .kpi-table td, html[dir="rtl"] .kpi-table th { text-align: start; }
 .lang-toggle + .net-badge { margin-inline-start: 0 !important; }
+
+/* FOR THE JUDGES */
+.judges { margin-top: 36px; }
+.judges-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 12px; }
+.judges-head h2 { font-size: 1.35rem; }
+.judges-head p { color: var(--ink-2); font-size: .9rem; margin: 0; }
+.judges-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.jtile { display: grid; gap: 4px; align-content: start; text-align: start; padding: 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); color: inherit; text-decoration: none; font: inherit; cursor: pointer; transition: transform .15s, border-color .15s; }
+.jtile:hover { transform: translateY(-2px); border-color: var(--palm-2); }
+.jw { font: 700 .68rem var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--gold); }
+.jtile b { font: 700 1.6rem/1.1 var(--display); color: var(--palm); font-variant-numeric: tabular-nums; }
+.jt { font-size: .78rem; color: var(--ink-2); line-height: 1.35; }
+.jgo { font-size: .75rem; font-weight: 700; color: var(--palm-2); margin-top: 4px; }
+.jtour { background: var(--palm); border-color: var(--palm); }
+.jtour b { color: #f5d27a; }
+.jtour .jt { color: #d7e2da; }
+.jtour .jgo { color: #fff; }
+
+/* IMPACT + STRESS TEST */
+.impact-card { padding: 22px; display: grid; gap: 16px; }
+.impact-slider input { max-width: 520px; }
+.impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.itile { padding: 16px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
+.itile b { font: 700 1.7rem/1.1 var(--display); color: var(--palm); font-variant-numeric: tabular-nums; }
+.itile.good b { color: var(--leaf); }
+.itile span { font-size: .85rem; color: var(--ink-2); }
+.impact-foot { font-size: .76rem; color: var(--ink-2); margin: 0; }
+.stress-card { margin-top: 18px; padding: 22px; display: grid; gap: 14px; }
+.stress-head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start; }
+.stress-head p { color: var(--ink-2); font-size: .9rem; margin-top: 6px; }
+.stress-controls { display: grid; gap: 12px; }
+.stress-table { min-width: 620px; }
+.stress-table td.good b { color: var(--leaf); }
+.stress-table td.bad b { color: var(--salt); }
+@media (max-width: 1000px) { .judges-grid { grid-template-columns: repeat(3, 1fr); } .impact-grid { grid-template-columns: 1fr 1fr; } .stress-head { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .judges-grid { grid-template-columns: 1fr 1fr; } .jtile b { font-size: 1.3rem; } .itile b { font-size: 1.35rem; } }
+
+/* WALL PLAN (print only) */
+.wall-plan { display: none; }
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body.printing-wall > *:not(#wallPlan) { display: none !important; }
+  body.printing-wall { background: #fff; }
+  body.printing-wall #wallPlan { display: block; color: #000; font-family: var(--sans); }
+  #wallPlan header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #000; padding-bottom: 8px; margin-bottom: 10px; }
+  #wallPlan h1 { font: 700 30pt var(--display); }
+  #wallPlan h1 [lang="ar"] { font-family: "Noto Naskh Arabic", serif; margin-inline-end: 8px; }
+  #wallPlan header p { font-size: 11pt; margin: 4px 0 0; }
+  #wallPlan .wp-qr { width: 30mm; text-align: center; font-size: 8pt; }
+  #wallPlan table { width: 100%; border-collapse: collapse; }
+  #wallPlan th, #wallPlan td { border: 1.5px solid #000; padding: 6px 8px; text-align: center; vertical-align: middle; }
+  #wallPlan th { font-size: 10pt; background: #eee; }
+  #wallPlan th span, #wallPlan td span, #wallPlan td b { display: block; }
+  #wallPlan [lang="ar"] { font-family: "Noto Naskh Arabic", serif; font-size: 1.15em; }
+  #wallPlan [lang="ur"] { font-family: "Noto Nastaliq Urdu", serif; line-height: 1.9; }
+  #wallPlan td small { font-size: 8pt; }
+  #wallPlan td.big { font: 700 24pt var(--sans); font-variant-numeric: tabular-nums; }
+  #wallPlan td.big small { display: block; font: 600 8pt var(--sans); }
+  #wallPlan td.icon { font-size: 18pt; }
+  #wallPlan tr.flush td { background: #dbeafe; font-weight: 700; }
+  #wallPlan .wp-notes p { font-size: 11pt; margin: 8px 0; }
+  #wallPlan .wp-flush { font-size: 14pt !important; font-weight: 700; border: 2px dashed #000; padding: 6px 10px; }
+  #wallPlan .wp-foot { font-size: 8pt !important; color: #444; }
+}

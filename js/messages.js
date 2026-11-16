@@ -38,7 +38,8 @@
     const rise = sunrise(iso, lat, lon);
     const end = rise + 0.5;
     const mins = Math.round(hours * 60);
-    return { mins, h: Math.floor(mins / 60), m: mins % 60, start: clock(end - hours), end: clock(end), sunrise: clock(rise) };
+    // night: a long run (salt flush) starts the evening before.
+    return { mins, h: Math.floor(mins / 60), m: mins % 60, start: clock(end - hours), end: clock(end), sunrise: clock(rise), night: end - hours < 0 };
   }
   const hm = (s) => s.h + 'h' + String(s.m).padStart(2, '0');
 

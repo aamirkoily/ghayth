@@ -43,11 +43,12 @@ Press **▶ Play the year** and talk over it:
 
 ## 2:30 – 3:00 · Proof, profit, close
 
-> "A full year on real weather: 14% less water than the FAO textbook salt rule, same full harvest, zero days above the salt limit. These are automated tests, not slides: 21 of them, including one proving the model never invents water or salt."
+> "A full year on real weather: 14% less water than the FAO textbook salt rule, same full harvest, zero days above the salt limit. These are automated tests, not slides: 22 of them, including one proving the model never invents water or salt."
 
 - Scroll to **05 · The business case** and drag the **water cost** slider from 1 to 3:
   > "And it's a business. Ghayth picks the salt target that earns this farm the most: here AED 1,900 a year more than its routine, with the same water. Make water expensive and it re-plans, and warns when the water costs more than the dates are worth. Advisers pay one dirham per palm a year. The farm's gain is about nine times that."
 - Flash **06 · Adviser view**: "One agronomist, every farm, who needs a flush this week."
+- **07 · Impact**: "If one palm in ten in the UAE used it: 57 million cubic metres of groundwater a year, conservatively. And in a hotter, saltier desert it still keeps every date."
 
 - Tap **📵 Test with no signal**: "No signal? The week's plan is already on the phone."
 - Tap **📱 Send SMS** on your phone: "One plain-text SMS, any phone."
@@ -63,7 +64,7 @@ Press **▶ Play the year** and talk over it:
 | The core | 30% | Today plan + "How today's number is decided" + proof table vs the grower's routine + profit table (+AED 1,892/yr vs routine) |
 | Your angle | 25% | Salt is the hidden problem: Soil X-ray + the judges losing the Challenge |
 | Desert rules | 20% | 14% less water than FAO, offline button, one SMS, $20 pen, Arabic/Urdu voice for farmers who don't read |
-| Execution | 15% | FAO-56/FAO-29 science, mass-balanced 8-layer model, 21 tests on GitHub Actions, offline PWA, no build step, daily SMS on a schedule |
+| Execution | 15% | FAO-56/FAO-29 science, mass-balanced 8-layer model, 22 tests on GitHub Actions, offline PWA, no build step, daily SMS on a schedule |
 | Demo and pitch | 10% | Voice moment + judges playing the Challenge + the narrated tour (▶ 2-minute guided tour) as a fallback |
 
 ## Likely judge questions

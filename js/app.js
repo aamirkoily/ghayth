@@ -298,7 +298,7 @@
     html += '<li class="final"><div>Give each palm <span>(' + fmt((d.litres * inp.palms) / 1000, 1) + ' m³ for ' + fmt(inp.palms) + ' palms; your routine: ' + fmt(d.habit) + ' L)</span></div><b>' + fmt(d.litres) + ' L</b></li>';
     if (d.given) html += '<li class="final"><div>Farmer replied: actually given today <span>(the plan was ' + fmt(d.planned) + ' L; the rest of the week is re-planned from this)</span></div><b>' + fmt(d.litres) + ' L</b></li>';
     const run = d.litres > 0 && !d.given && window.Messages.schedule(d.litres, inp, d.time);
-    if (run) html += '<li class="final run"><div>Open the valve <span>(' + fmt(d.litres) + ' L ÷ ' + fmt(inp.flow, 1) + ' L/h per palm · start ' + run.start + ', done by ' + run.end + ', 30 min after sunrise at ' + run.sunrise + ', in the cool hours)</span></div><b>' + run.h + ' h ' + String(run.m).padStart(2, '0') + '</b></li>';
+    if (run) html += '<li class="final run"><div>Open the valve <span>(' + fmt(d.litres) + ' L ÷ ' + fmt(inp.flow, 1) + ' L/h per palm · start ' + run.start + (run.night ? ' the evening before' : '') + ', done by ' + run.end + ', 30 min after sunrise at ' + run.sunrise + ', in the cool hours)</span></div><b>' + run.h + ' h ' + String(run.m).padStart(2, '0') + '</b></li>';
     $('traceSteps').innerHTML = html;
   }
 

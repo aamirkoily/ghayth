@@ -25,6 +25,7 @@
       <a href="#challenge">Challenge</a>
       <a href="#proof">Proof</a>
       <a href="#business">Business</a>
+      <a href="#impact">Impact</a>
       <a href="#how">How it works</a>
     </nav>
     <button class="lang-toggle" id="uiLang" type="button" lang="ar" aria-label="Page language">عربي</button>
@@ -59,6 +60,22 @@
         </div>
         <p class="stat-foot" id="heroFoot">Simulated on real 2025 weather.</p>
         <div class="qr-row"><div class="qr" id="qrBox" aria-label="QR code to open this app on your phone"></div><p><b>Try it on your phone</b>Scan with the camera. Works offline once opened.</p></div>
+      </div>
+    </section>
+
+    <!-- FOR THE JUDGES -->
+    <section class="judges" id="judges" aria-labelledby="judgesTitle">
+      <div class="judges-head">
+        <h2 id="judgesTitle">For the judges: 60 seconds</h2>
+        <p>Each criterion, the number that answers it, and where to see it live.</p>
+      </div>
+      <div class="judges-grid">
+        <a class="jtile" href="#today"><span class="jw">Core · 30%</span><b id="jCore">–</b><span class="jt">litres per palm today, with the valve time and the salt-flush day, from the live forecast</span><span class="jgo">See today’s plan →</span></a>
+        <a class="jtile" href="#xray"><span class="jw">Angle · 25%</span><b id="jAngle">–</b><span class="jt">of the dates lost by a typical water-saving app, because salt is never washed out</span><span class="jgo">Watch the soil X-ray →</span></a>
+        <a class="jtile" href="#rules"><span class="jw">Desert rules · 20%</span><b id="jDesert">–</b><span class="jt">less water than the official salt rule, same harvest. One SMS, works offline, no sensors</span><span class="jgo">See the desert rules →</span></a>
+        <a class="jtile" href="#checkCard"><span class="jw">Execution · 15%</span><b id="jExec">21 tests</b><span class="jt">and the model matches published UAE sap-flow measurements</span><span class="jgo">See the model check →</span></a>
+        <a class="jtile" href="#impact"><span class="jw">Would deploy</span><b id="jImpact">–</b><span class="jt">of groundwater a year if 10% of the UAE’s 40 million date palms used Ghayth</span><span class="jgo">See the UAE impact →</span></a>
+        <button class="jtile jtour" type="button" id="jTour"><span class="jw">Demo · 10%</span><b>▶ 2 min</b><span class="jt">a narrated tour of everything, hands-free</span><span class="jgo">Start the tour →</span></button>
       </div>
     </section>
 
@@ -152,6 +169,7 @@
             <a class="btn btn-sms" id="smsLink" title="Opens your phone’s SMS app with the message ready">📱 Send SMS</a>
             <button class="btn btn-ghost" id="speakBtn" type="button">🔊 Read aloud</button>
             <button class="btn btn-ghost" id="smsBtn" type="button">Copy SMS</button>
+            <button class="btn btn-ghost" id="printBtn" type="button" title="One A4 page in Arabic, Urdu and English for the pump house">🖨 Print wall plan</button>
             <button class="btn btn-ask" id="askBtn" type="button">🎙 Ask a question by voice</button>
           </div>
           <p class="sms-preview" id="smsPreview"></p>
@@ -257,7 +275,7 @@
           <div class="chart-box"><canvas id="waterChart" aria-label="Cumulative water chart"></canvas></div>
         </figure>
       </div>
-      <div class="card check-card">
+      <div class="card check-card" id="checkCard">
         <h3>🔬 Model check: does it match UAE field measurements?</h3>
         <p>The model was not tuned to these numbers. They come from sap-flow measurements on UAE date palms (ICBA with Plant &amp; Food Research, NZ).</p>
         <div class="table-wrap"><table class="kpi-table check-table" id="checkTable"></table></div>
@@ -323,9 +341,40 @@
       <div class="table-wrap"><table class="kpi-table adv-table" id="advTable"></table></div>
     </section>
 
-    <section class="rules" aria-labelledby="rulesTitle">
+    <!-- IMPACT -->
+    <section class="impact" id="impact" aria-labelledby="impactTitle">
       <div class="section-head">
-        <p class="kicker">07 · Built for the desert</p>
+        <p class="kicker">07 · Impact at UAE scale</p>
+        <h2 id="impactTitle">What if the UAE’s date palms used Ghayth?</h2>
+        <p>The UAE has about <b>40 million date palms</b>, watered almost entirely from groundwater that is pumped far faster than it refills. Drag to choose how many adopt Ghayth. Each one is assumed to be like the farm you set up above, compared with the official 1.5 × ETc salt rule (a conservative baseline, not with over-watering).</p>
+      </div>
+      <div class="card impact-card">
+        <label class="field impact-slider">
+          <span>Palms using Ghayth: <b id="adoptVal">10%</b> <small id="adoptPalms">4 million palms</small></span>
+          <input id="adopt" type="range" min="1" max="100" step="1" value="10">
+        </label>
+        <div class="impact-grid" id="impactGrid" aria-live="polite"></div>
+        <p class="impact-foot" id="impactFoot"></p>
+      </div>
+
+      <div class="card stress-card" id="stress">
+        <div class="stress-head">
+          <div>
+            <h3>🔥 Stress test: a harsher desert</h3>
+            <p>A scenario, not a forecast: hotter summers raise evaporation, and over-pumped aquifers get saltier. Does each method still protect the harvest?</p>
+          </div>
+          <div class="stress-controls">
+            <label class="field"><span>Evaporation demand <b id="hotVal">+10%</b></span><input id="hot" type="range" min="0" max="25" step="1" value="10"></label>
+            <label class="field"><span>Well water saltier by <b id="saltierVal">+2.0</b> dS/m</span><input id="saltier" type="range" min="0" max="4" step="0.5" value="2"></label>
+          </div>
+        </div>
+        <div class="table-wrap"><table class="kpi-table stress-table" id="stressTable"></table></div>
+      </div>
+    </section>
+
+    <section class="rules" id="rules" aria-labelledby="rulesTitle">
+      <div class="section-head">
+        <p class="kicker">08 · Built for the desert</p>
         <h2 id="rulesTitle">The desert rules</h2>
       </div>
       <div class="rules-grid">
@@ -351,7 +400,7 @@
     <!-- HOW -->
     <section class="how" id="how" aria-labelledby="howTitle">
       <div class="section-head">
-        <p class="kicker">08 · How it works</p>
+        <p class="kicker">09 · How it works</p>
         <h2 id="howTitle">From weather to a decision</h2>
       </div>
       <ol class="pipeline">
@@ -411,7 +460,10 @@
   <script src="js/app.js"></script>
   <script src="js/extras.js"></script>
   <script src="js/business.js"></script>
+  <script src="js/impact.js"></script>
+  <script src="js/wallplan.js"></script>
   <script src="js/tour.js"></script>
   <script src="js/i18n.js"></script>
+  <section id="wallPlan" class="wall-plan" aria-hidden="true"></section>
 </body>
 </html>

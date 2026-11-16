@@ -105,8 +105,32 @@
       'كل مزرعة تحصل على خطتها من بئرها وقراءة تربتها والتوقعات المباشرة. يرى المستشار من يحتاج غسيل أملاح هذا الأسبوع وكمية الماء لكل مزرعة اليوم. المزارع أدناه',
     'fictional demo farms': 'مزارع تجريبية وهمية', 'Farm': 'المزرعة', 'Palms': 'النخيل', 'Well salt': 'ملوحة البئر', 'Soil salt now': 'ملوحة التربة الآن', 'Today / palm': 'اليوم / نخلة',
     'Today / farm': 'اليوم / مزرعة', 'This week': 'هذا الأسبوع', 'SMS in Urdu': 'رسائل بالأردية', 'SMS in Arabic': 'رسائل بالعربية', 'SMS in English': 'رسائل بالإنجليزية', '✓ Salt safe': '✓ الملوحة آمنة',
+    // judges strip
+    'For the judges: 60 seconds': 'للحكّام: 60 ثانية', 'Each criterion, the number that answers it, and where to see it live.': 'كل معيار، والرقم الذي يجيب عنه، وأين تراه مباشرة.',
+    'Core · 30%': 'الجوهر · 30%', 'Angle · 25%': 'الزاوية · 25%', 'Desert rules · 20%': 'قواعد الصحراء · 20%', 'Execution · 15%': 'التنفيذ · 15%', 'Would deploy': 'قابل للتطبيق', 'Demo · 10%': 'العرض · 10%',
+    'litres per palm today, with the valve time and the salt-flush day, from the live forecast': 'لتر لكل نخلة اليوم، مع مدة فتح المحبس ويوم غسيل الأملاح، من التوقعات المباشرة',
+    'of the dates lost by a typical water-saving app, because salt is never washed out': 'من التمور تضيع مع تطبيق توفير المياه المعتاد، لأن الملح لا يُغسل أبداً',
+    'less water than the official salt rule, same harvest. One SMS, works offline, no sensors': 'ماء أقل من القاعدة الرسمية للأملاح بنفس المحصول. رسالة واحدة، يعمل دون إنترنت، بلا حساسات',
+    'and the model matches published UAE sap-flow measurements': 'والنموذج يطابق قياسات تدفق العصارة المنشورة في الإمارات',
+    'of groundwater a year if 10% of the UAE’s 40 million date palms used Ghayth': 'من المياه الجوفية سنوياً لو استخدم غيث 10% من نخيل الإمارات البالغ 40 مليون نخلة',
+    'a narrated tour of everything, hands-free': 'جولة مسموعة لكل شيء، دون لمس', '21 tests': '21 اختباراً', '▶ 2 min': '▶ دقيقتان',
+    'See today’s plan →': 'خطة اليوم ←', 'Watch the soil X-ray →': 'شاهد أشعة التربة ←', 'See the desert rules →': 'قواعد الصحراء ←', 'See the model check →': 'فحص النموذج ←', 'See the UAE impact →': 'الأثر على مستوى الدولة ←', 'Start the tour →': 'ابدأ الجولة ←',
+    'Impact': 'الأثر', '🖨 Print wall plan': '🖨 اطبع خطة الجدار',
+    // impact + stress
+    '07 · Impact at UAE scale': '07 · الأثر على مستوى الإمارات', 'What if the UAE’s date palms used Ghayth?': 'ماذا لو استخدم نخيل الإمارات غيث؟',
+    'The UAE has about': 'في الإمارات نحو', '40 million date palms': '40 مليون نخلة',
+    ', watered almost entirely from groundwater that is pumped far faster than it refills. Drag to choose how many adopt Ghayth. Each one is assumed to be like the farm you set up above, compared with the official 1.5 × ETc salt rule (a conservative baseline, not with over-watering).':
+      '، تُسقى كلها تقريباً من مياه جوفية تُضخ أسرع بكثير مما تتجدد. اسحب لتختار عدد النخيل الذي يستخدم غيث. نفترض أن كل نخلة مثل مزرعتك أعلاه، مقارنة بالقاعدة الرسمية 1.5 × ETc (خط أساس متحفظ، لا مقارنة بالإسراف).',
+    'Palms using Ghayth:': 'النخيل التي تستخدم غيث:', 'of groundwater left in the aquifer every year': 'من المياه الجوفية تبقى في الخزان كل سنة',
+    'people’s yearly water use (at the UAE average of 353 L a day)': 'شخص: استهلاكهم السنوي من الماء (بمتوسط الإمارات 353 لتراً يومياً)',
+    'of electricity: what desalinating that much seawater would take (≈ 3.5 kWh/m³)': 'من الكهرباء: ما تحتاجه تحلية هذه الكمية من مياه البحر (≈ 3.5 كيلوواط ساعة/م³)',
+    '🔥 Stress test: a harsher desert': '🔥 اختبار الضغط: صحراء أقسى',
+    'A scenario, not a forecast: hotter summers raise evaporation, and over-pumped aquifers get saltier. Does each method still protect the harvest?': 'سيناريو لا توقع: الصيف الأحر يرفع التبخر، والخزانات المستنزفة تزداد ملوحة. هل تبقى كل طريقة تحمي المحصول؟',
+    'Evaporation demand': 'التبخر', 'Well water saltier by': 'زيادة ملوحة البئر',
+    'Harvest now → harsher': 'المحصول الآن ← الأقسى', 'Salt-damage days now → harsher': 'أيام ضرر الملح الآن ← الأقسى', 'Farm water, harsher year': 'ماء المزرعة في السنة الأقسى',
+    'Official salt rule (FAO)': 'القاعدة الرسمية للأملاح (الفاو)', '✓ holds': '✓ صامد',
     // rules + how
-    '07 · Built for the desert': '07 · مصمم للصحراء', 'The desert rules': 'قواعد الصحراء', 'Every litre has a job': 'لكل لتر مهمة',
+    '08 · Built for the desert': '08 · مصمم للصحراء', 'The desert rules': 'قواعد الصحراء', 'Every litre has a job': 'لكل لتر مهمة',
     'Water follows the real daily heat, not the calendar. Extra water is only given to wash salt out, and only when salt is near the limit, when each litre carries out the most salt.':
       'الماء يتبع الحرارة الفعلية يومياً لا التقويم. الماء الإضافي يُعطى فقط لغسل الملح، وفقط عندما يقترب من الحد، حين يحمل كل لتر أكبر كمية من الملح.',
     'Works on one bar of signal': 'يعمل بشَرطة إشارة واحدة',
@@ -115,7 +139,7 @@
     '📵 Test with no signal': '📵 جرّب بدون إشارة', '📶 Back online': '📶 عودة الاتصال', 'Costs about one EC meter': 'تكلفته بثمن جهاز قياس ملوحة',
     'No sensors in the ground. Free satellite-era weather data, a $20 salinity pen checked once a month, and any phone. Workers get it in Urdu, owners in Arabic.':
       'لا حساسات في الأرض. بيانات طقس مجانية، وقلم ملوحة رخيص يُستخدم مرة شهرياً، وأي هاتف. العمال يستلمونها بالأردية والملاك بالعربية.',
-    '08 · How it works': '08 · كيف يعمل', 'From weather to a decision': 'من الطقس إلى القرار', 'Weather': 'الطقس',
+    '09 · How it works': '09 · كيف يعمل', 'From weather to a decision': 'من الطقس إلى القرار', 'Weather': 'الطقس',
     'Daily evaporation demand (ET₀), heat, rain. Live forecast + 2025 history.': 'التبخر اليومي (ET₀)، الحرارة، المطر. توقعات مباشرة + سجل 2025.',
     'Palm need': 'حاجة النخلة', 'ETc = ET₀ × Kc 0.9 × canopy 0.7 × spacing² (FAO-56).': 'ETc = ET₀ × Kc 0.9 × الغطاء 0.7 × المسافة² (الفاو-56).',
     'Soil-salt model': 'نموذج ملوحة التربة', '8 layers of sandy soil. Water carries salt down; roots leave it behind.': '8 طبقات من التربة الرملية. الماء يحمل الملح للأسفل؛ والجذور تتركه خلفها.',
@@ -133,6 +157,11 @@
 
   // Sentences with numbers: [pattern, Arabic builder].
   const RX = [
+    [/^([\d,.]+) million m³$/, (m, v) => v + ' مليون م³'],
+    [/^([\d,.]+) million palms$/, (m, v) => v + ' مليون نخلة'],
+    [/^([\d,.]+) palms$/, (m, v) => v + ' نخلة'],
+    [/^([\d,.]+) t$/, (m, v) => v + ' طن'],
+    [/^of dates a year kept from salt vs a water-only app \(([\d.]+)% of UAE production\)$/, (m, p) => 'من التمور سنوياً تُنقذ من الملح مقارنة بتطبيق يوفر الماء فقط (' + p + '% من إنتاج الإمارات)'],
     [/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/, (m, d) => day(d)],
     [/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)( · flush)?$/, (m, d, f) => day(d) + (f ? ' · غسيل' : '')],
     [/^Week (\d+) of (\d+)$/, (m, a, b) => 'الأسبوع ' + a + ' من ' + b],
@@ -167,8 +196,8 @@
     [/^Smallest extra water that washes salt back to ([\d.]+) dS\/m$/, (m, v) => 'أقل ماء إضافي يعيد الملوحة إلى ' + v + ' dS/m'],
     [/^\(solved by bisection on the soil model\)$/, () => '(يُحسب بالتنصيف على نموذج التربة)'],
     [/^\(([\d,.]+) m³ for ([\d,]+) palms; your routine: ([\d,]+) L\)$/, (m, a, b, c) => '(' + a + ' م³ لـ ' + b + ' نخلة؛ طريقتك: ' + c + ' لتر)'],
-    [/^\(([\d,]+) L ÷ ([\d,.]+) L\/h per palm · start (\d\d:\d\d), done by (\d\d:\d\d), 30 min after sunrise at (\d\d:\d\d), in the cool hours\)$/,
-      (m, l, f, s, e, r) => '(' + l + ' لتر ÷ ' + f + ' لتر/ساعة لكل نخلة · ابدأ ' + s + ' وانتهِ ' + e + '، بعد الشروق (' + r + ') بنصف ساعة، في الوقت البارد)'],
+    [/^\(([\d,]+) L ÷ ([\d,.]+) L\/h per palm · start (\d\d:\d\d)( the evening before)?, done by (\d\d:\d\d), 30 min after sunrise at (\d\d:\d\d), in the cool hours\)$/,
+      (m, l, f, s, eve, e, r) => '(' + l + ' لتر ÷ ' + f + ' لتر/ساعة لكل نخلة · ابدأ ' + s + (eve ? ' مساء اليوم السابق' : '') + ' وانتهِ ' + e + '، بعد الشروق (' + r + ') بنصف ساعة، في الوقت البارد)'],
     [/^(\d+) h (\d\d)$/, (m, h, mm) => h + ' س ' + mm + ' د'],
     [/^(\d+)h(\d\d)$/, (m, h, mm) => h + 'س' + mm],
     [/^a day this week, not a flat ([\d,]+) L\.$/, (m, v) => 'يومياً هذا الأسبوع، لا ' + v + ' لتر ثابتة.'],
@@ -206,7 +235,7 @@
     return null;
   }
 
-  const SKIP = 'script,style,code,#msgBubble,#smsPreview,.vbubble,.tour-bar,body [lang="ar"],body [lang="ur"],[data-noi18n]';
+  const SKIP = 'script,style,code,#wallPlan,#msgBubble,#smsPreview,.vbubble,.tour-bar,body [lang="ar"],body [lang="ur"],[data-noi18n]';
   function translate(root) {
     const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const todo = [];

@@ -133,3 +133,15 @@ test('valve schedule: litres become run-time that ends just after a real sunrise
   for (let i = 0; i < 7; i++) plan.push({ time: '2026-11-' + (16 + i), litres: 4999, flush: i === 3 ? 3000 : 0, habit: 250 });
   assert.ok(M.sms(plan, { palms: 100000, flow: 64 }).length <= 160, 'worst case still one SMS');
 });
+
+test('stress test: in a harsher desert (+10% evaporation, well +2 dS/m) Ghayth still keeps the full harvest', () => {
+  for (const site of SITES) {
+    const w = W[site];
+    const harsh = { time: w.time, et0: w.et0.map((x) => x * 1.1), rain: w.rain };
+    const g = E.simulate('ghayth', harsh, { ecw: 6 });
+    const naive = E.simulate('wateronly', harsh, { ecw: 6 });
+    assert.equal(g.saltDays, 0, site + ': no salt-damage days');
+    assert.ok(g.avgYield > 0.995, site + ': full harvest');
+    assert.ok(naive.avgYield < 0.9, site + ': the water-only app loses over 10%');
+  }
+});

@@ -72,6 +72,21 @@ Al Ain, 200 palms, 4 dS/m well, water AED 1/m³, 60 kg/palm at AED 5/kg (illustr
 
 **Adviser view:** one agronomist sees every farm on one screen. Each farm gets a plan from its own well, soil reading and live forecast, sorted by urgency: who is over the salt limit, who needs a flush this week, and the water each farm needs today. The demo uses 8 **fictional** farms.
 
+## Impact at UAE scale
+
+The UAE has about **40 million date palms** (Federal Competitiveness and Statistics Centre, 2019), irrigated almost entirely from groundwater pumped at 25× its recharge rate. The app has an adoption slider. At **10% adoption** (4 million palms) on the default farm settings:
+
+| | Per year |
+|---|---:|
+| Groundwater left in the aquifer (vs the official 1.5 × ETc rule) | **≈ 57 million m³** |
+| Equivalent people's water use (UAE average 353 L/person/day, MOCCAE) | ≈ 440,000 people |
+| Electricity to desalinate that much seawater instead (≈ 3.5 kWh/m³ SWRO) | ≈ 198 GWh |
+| Dates kept from salt vs a water-only app | ≈ 4,300 t (1.3% of UAE production) |
+
+The figures are **deliberately conservative**. Savings are scaled from the model's large palm (95 m³/yr) down to the median commercial UAE palm (70 m³/yr, Al-Muaini et al. 2019). Dates use the national average of 8.5 kg per palm (341,246 t ÷ 40 million palms), not a mature-palm yield.
+
+**Stress test, a harsher desert.** This is a scenario, not a forecast. With evaporation +10% (hotter summers) and well water +2 dS/m (over-pumped aquifers), the routine falls from 95.8% to 89.3% of the harvest, and from 179 to 308 salt-damage days. The water-only app falls from 87% to 84%. Ghayth keeps **100% and 0 days**, and uses about 21% less water than the official rule. This is an automated test at both oases.
+
 ## Model check against UAE field measurements
 
 The model was not tuned to these numbers. They are sap-flow measurements on UAE date palms (ICBA with Plant & Food Research, NZ):
@@ -111,6 +126,8 @@ Weather (ET₀, heat, rain) ─► Palm water need ─► 8-layer soil water + s
 
 ## Highlights in the app
 
+- **For the judges: 60 seconds.** A strip under the hero with one tile per judging criterion: the number that answers it and a link to see it live.
+- **🖨 Wall plan for the pump house.** One A4 page in Arabic, Urdu and English: valve start time and duration for each day, the flush day highlighted, reply codes, and a QR code. It's for workers with no phone or no signal.
 - **⏱ Valve time, not litres.** Workers open a valve and wait, so the plan says "open the valve 3 h 00 min, start 04:06" from the drippers per palm and their flow. The run ends 30 minutes after sunrise (computed for the farm's position and date) to water in the cool hours with less evaporation.
 - **🚱 "Didn't water today?"** Reply 1 = done, 0 = didn't water, or the litres actually given. The soil model takes what really happened and re-plans the week: tomorrow refills the dry soil, and the flush moves if salt needs it. The SMS asks for the same reply.
 - **عربي: the whole page in Arabic**, right-to-left, including the live tables and numbers. Use the header button, or open [`?lang=ar`](https://aamirkoily.github.io/ghayth/?lang=ar).
@@ -159,7 +176,7 @@ No build step. Plain HTML, CSS and JavaScript.
 
 ```bash
 npm start            # serves on http://localhost:5173 (python -m http.server)
-npm test             # 21 tests: mass balance, headline claims, messages, profit optimiser, missed-day re-plan, valve schedule
+npm test             # 22 tests: mass balance, headline claims, messages, profit optimiser, missed-day re-plan, valve schedule, harsher-desert stress test
 npm run compare      # print the season and 3-year comparisons in the terminal
 npm run send:dry     # print today's SMS for each farm in farms.example.json
 ```
@@ -174,6 +191,8 @@ js/messages.js        daily message in English/Arabic/Urdu + one-segment SMS (sh
 js/app.js             UI: forecast, message, soil X-ray animation, charts
 js/extras.js          voice assistant, "Can you beat Ghayth?" challenge, QR code
 js/business.js        profit optimiser, unit economics, adviser (multi-farm) view
+js/impact.js          judges' 60-second strip, UAE-scale impact calculator, harsher-desert stress test
+js/wallplan.js        printable A4 wall plan (Arabic, Urdu, English)
 js/tour.js            narrated 2-minute guided tour (?tour=1)
 js/i18n.js            whole page in Arabic, right-to-left (?lang=ar)
 data/weather2025.js   bundled real 2025 weather (offline)
