@@ -4,7 +4,7 @@
 
 > Breaking Bytes 2026 · Problem **A-001 Smart Farming for the Desert**
 
-**Live demo:** _GitHub Pages link goes here_ · works on any phone, installs, runs offline.
+**Live demo:** https://aamirkoily.github.io/nakhlawise/ · works on any phone, installs, runs offline.
 
 ---
 
